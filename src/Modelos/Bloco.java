@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelos;
 
-/**
- *
- * @author Pichau
- */
-public class Bloco {
-    
+public class Bloco extends Personagem {
+    public Bloco(String sNomeImagePNG) {
+        super(sNomeImagePNG);
+        this.setbTransponivel(false);
+        this.bMortal = false;
+    }
 }
