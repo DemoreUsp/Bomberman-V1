@@ -1,8 +1,8 @@
 package Controler;
 
-import Modelos.Chaser;
+// import Modelos.Chaser;
 import Modelos.Personagem;
-import Modelos.Hero;
+import Modelos.Heroi;
 import Auxiliar.Posicao;
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class ControleDeJogo {
     }
 
     public void processaTudo(ArrayList<Personagem> umaFase) {
-        Hero hero = (Hero) umaFase.get(0);
+        Heroi hero = (Heroi) umaFase.get(0);
         Personagem pIesimoPersonagem;
         for (int i = 1; i < umaFase.size(); i++) {
             pIesimoPersonagem = umaFase.get(i);
@@ -28,12 +28,12 @@ public class ControleDeJogo {
                 }
             }
         }
-        for (int i = 1; i < umaFase.size(); i++) {
-            pIesimoPersonagem = umaFase.get(i);
-            if (pIesimoPersonagem instanceof Chaser) {
-                ((Chaser) pIesimoPersonagem).computeDirection(hero.getPosicao());
-            }
-        }
+        // for (int i = 1; i < umaFase.size(); i++) {
+        //     pIesimoPersonagem = umaFase.get(i);
+        //     if (pIesimoPersonagem instanceof Chaser) {
+        //         ((Chaser) pIesimoPersonagem).computeDirection(hero.getPosicao());
+        //     }
+        // }
     }
 
     /*
