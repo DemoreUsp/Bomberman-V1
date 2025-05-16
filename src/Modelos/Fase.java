@@ -1,6 +1,6 @@
 package Modelos;
 
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
 import java.util.ArrayList;
 
 public class Fase {

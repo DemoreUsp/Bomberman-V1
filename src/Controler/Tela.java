@@ -6,14 +6,10 @@ import Modelos.Bloco;
 import Modelos.CanoBillbala;
 import Modelos.Heroi;
 import Auxiliar.Consts;
-import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Auxiliar.Desenho;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
-import Auxiliar.Posicao;
-import Auxiliar.Posicao;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -66,7 +62,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     carregarFase(0);
     
     this.atualizaCamera();
-}
 
         Desenho.setCenario(this);
         initComponents();
@@ -78,19 +73,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
  /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
-
-        faseAtual = new ArrayList<Personagem>();
-
-        /*Cria faseAtual adiciona personagens*/
-        Mario = new Heroi("mario.png");
-        Mario.setPosicao(0, 7);
-        this.addPersonagem(Mario);
-        this.atualizaCamera();    
-        
-        CanoBillbala cb = new CanoBillbala("");
-        cb.setPosicao(9, 18);
-        this.addPersonagem(cb);
-        this.atualizaCamera();
     }
 
     public int getCameraLinha() {
@@ -173,7 +155,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         // Adicionar inimigos
-        fase1.adicionarPersonagem(new Goomba("goomba.png"));
+        CanoBillbala inimigo1 = new CanoBillbala("");
+        inimigo1.setPosicao(11, 12);
+        fase1.adicionarPersonagem(inimigo1);
+        
         
         // Fase 2 (exemplo)
         Fase fase2 = new Fase(2, new Posicao(5, 5));
