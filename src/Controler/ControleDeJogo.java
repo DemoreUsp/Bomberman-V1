@@ -2,7 +2,7 @@ package Controler;
 
 import Modelos.Personagem;
 import Modelos.Heroi;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
 import java.util.ArrayList;
 
 public class ControleDeJogo {
