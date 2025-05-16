@@ -1,7 +1,7 @@
 package Controler;
 
 import Modelos.Personagem;
-//import Modelos.Caveira;
+import Modelos.CanoBillbala;
 import Modelos.Heroi;
 //import Modelos.Chaser;
 //import Modelos.BichinhoVaiVemHorizontal;
@@ -9,7 +9,7 @@ import Auxiliar.Consts;
 import Auxiliar.Desenho;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -60,8 +60,12 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Mario = new Heroi("mario.png");
         Mario.setPosicao(0, 7);
         this.addPersonagem(Mario);
-        this.atualizaCamera();     
+        this.atualizaCamera();    
         
+        CanoBillbala cb = new CanoBillbala("");
+        cb.setPosicao(9, 18);
+        this.addPersonagem(cb);
+        this.atualizaCamera();
     }
 
     public int getCameraLinha() {

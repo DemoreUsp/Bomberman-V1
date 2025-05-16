@@ -11,12 +11,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class BichinhoVaiVemHorizontal extends Personagem implements Serializable {
+public class Goomba extends Personagem implements Serializable {
 
     private boolean bRight;
     int iContador;
 
-    public BichinhoVaiVemHorizontal(String sNomeImagePNG) {
+    public Goomba(String sNomeImagePNG) {
         super(sNomeImagePNG);
         bRight = true;
         iContador = 0;

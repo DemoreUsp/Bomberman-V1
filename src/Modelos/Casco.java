@@ -5,9 +5,9 @@ import Controler.Tela;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-public class Fogo extends Personagem implements Serializable{
+public class Casco extends Personagem implements Serializable{
             
-    public Fogo(String sNomeImagePNG) {
+    public Casco(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bMortal = true;
     }
@@ -15,7 +15,7 @@ public class Fogo extends Personagem implements Serializable{
     @Override
     public void autoDesenho() {
         super.autoDesenho();
-        if(!this.moveRight())
+        if(!this.moveLeft())
             Desenho.acessoATelaDoJogo().removePersonagem(this);
     }
     
