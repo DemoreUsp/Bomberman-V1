@@ -29,3 +29,47 @@ Os seguintes itens devem ser entregues em um documento anexo com no máximo 2 p�
 - Nome e número USP dos integrantes do grupo;
 - Diagrama UML simplificado de classes e interfaces, pode-se usar um gerador automático ou fazer na mão;
 - Quaisquer esclarecimentos necessários para executar/compilar.
+
+```
+Bomberman-V1
+├─ build.xml
+├─ imgs
+│  ├─ billbala.png
+│  ├─ blackTile.png
+│  ├─ bloco.png
+│  ├─ bowser.png
+│  ├─ casco.png
+│  ├─ goomba.png
+│  ├─ interrogacao.png
+│  ├─ koopa.png
+│  └─ mario.png
+├─ manifest.mf
+├─ nbproject
+│  ├─ build-impl.xml
+│  ├─ genfiles.properties
+│  ├─ private
+│  │  ├─ config.properties
+│  │  ├─ private.properties
+│  │  └─ private.xml
+│  ├─ project.properties
+│  └─ project.xml
+├─ POO.dat
+├─ README.md
+└─ src
+   ├─ Auxiliar
+   │  ├─ Consts.java
+   │  ├─ Desenho.java
+   │  └─ Posicao.java
+   ├─ Controler
+   │  ├─ ControleDeJogo.java
+   │  ├─ Tela.form
+   │  └─ Tela.java
+   ├─ Main.java
+   └─ Modelos
+      ├─ BichinhoVaiVemHorizontal.java
+      ├─ Caveira.java
+      ├─ Fogo.java
+      ├─ Heroi.java
+      └─ Personagem.java
+
+```
