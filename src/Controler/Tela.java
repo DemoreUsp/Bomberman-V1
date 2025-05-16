@@ -1,14 +1,15 @@
 package Controler;
 
 import Modelos.Personagem;
+import Modelos.Fase;
+import Modelos.Bloco;
 import Modelos.CanoBillbala;
 import Modelos.Heroi;
-//import Modelos.Chaser;
-//import Modelos.BichinhoVaiVemHorizontal;
 import Auxiliar.Consts;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Desenho;
+import auxiliar.Posicao;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
 import Auxiliar.Posicao;
@@ -37,15 +38,36 @@ import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
-
+    private ArrayList<Fase> fases;
+    private int faseAtualIndex;
+    private Fase faseAtual;
     private Heroi Mario;
-    private ArrayList<Personagem> faseAtual;
     private ControleDeJogo cj = new ControleDeJogo();
     private Graphics g2;
     private int cameraLinha = 0;
     private int cameraColuna = 0;
 
     public Tela() {
+    Desenho.setCenario(this);
+    initComponents();
+    this.addMouseListener(this);
+    this.addKeyListener(this);
+
+    this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
+            Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
+
+    // Cria o herói primeiro
+    Mario = new Heroi("mario.png");
+    
+    // Inicializa o sistema de fases
+    this.fases = new ArrayList<>();
+    this.faseAtualIndex = 0;
+    inicializarFases();
+    carregarFase(0);
+    
+    this.atualizaCamera();
+}
+
         Desenho.setCenario(this);
         initComponents();
         this.addMouseListener(this);
@@ -80,15 +102,15 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public boolean ehPosicaoValida(Posicao p) {
-        return cj.ehPosicaoValida(this.faseAtual, p);
+        return cj.ehPosicaoValida(this.faseAtual.getPersonagens(), p);
     }
 
     public void addPersonagem(Personagem umPersonagem) {
-        faseAtual.add(umPersonagem);
+        faseAtual.getPersonagens().add(umPersonagem);
     }
 
     public void removePersonagem(Personagem umPersonagem) {
-        faseAtual.remove(umPersonagem);
+        faseAtual.getPersonagens().remove(umPersonagem);
     }
 
     public Graphics getGraphicsBuffer() {
@@ -120,9 +142,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
-        if (!this.faseAtual.isEmpty()) {
-            this.cj.desenhaTudo(faseAtual);
-            this.cj.processaTudo(faseAtual);
+        if (!this.faseAtual.getPersonagens().isEmpty()) {
+            this.cj.desenhaTudo(faseAtual.getPersonagens());
+            this.cj.processaTudo(faseAtual.getPersonagens());
         }
 
         g.dispose();
@@ -139,6 +161,54 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_ALTURA - Consts.RES));
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_LARGURA - Consts.RES));
     }
+    
+    private void inicializarFases() {
+        Posicao inicioFase1 = new Posicao(0, 7);
+        Fase fase1 = new Fase(1, inicioFase1);
+        
+        for(int col = 3; col < 8; col++) {
+            Bloco bloco = new Bloco("bloco.png");
+            bloco.setPosicao(10, col);
+            fase1.adicionarPersonagem(bloco);
+        }
+        
+        // Adicionar inimigos
+        fase1.adicionarPersonagem(new Goomba("goomba.png"));
+        
+        // Fase 2 (exemplo)
+        Fase fase2 = new Fase(2, new Posicao(5, 5));
+        // ... configurar fase 2 ...
+
+        fases.add(fase1);
+        fases.add(fase2);
+    }
+    
+    private void carregarFase(int indice) {
+    faseAtualIndex = indice;
+    faseAtual = fases.get(indice);
+    
+    // Limpa personagens da tela
+    faseAtual.getPersonagens().clear();
+    
+    // Posiciona Mario na posição inicial da fase
+    Mario.setPosicao(
+        faseAtual.getPosicaoInicialHeroi().getLinha(),
+        faseAtual.getPosicaoInicialHeroi().getColuna()
+    );
+    
+    // Adiciona Mario e os elementos da fase
+    faseAtual.getPersonagens().add(Mario);
+    // Adiciona outros elementos da fase (plataformas, inimigos, etc.)
+    faseAtual.getPersonagens().addAll(fases.get(indice).getPersonagens());
+}
+
+    public void proximaFase() {
+        if(faseAtualIndex < fases.size() - 1) {
+            carregarFase(++faseAtualIndex);
+        } else {
+            // Jogo completado
+        }
+    }
 
     public void go() {
         TimerTask task = new TimerTask() {
@@ -152,7 +222,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_C) {
-            this.faseAtual.clear();
+            carregarFase(faseAtualIndex); 
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             Mario.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
