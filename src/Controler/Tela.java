@@ -172,7 +172,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     faseAtualIndex = indice;
     faseAtual = fases.get(indice);
     
-    // Limpa personagens da tela
+    //Limpa personagens da tela
     faseAtual.getPersonagens().clear();
     
     // Posiciona Mario na posição inicial da fase
@@ -184,7 +184,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     // Adiciona Mario e os elementos da fase
     faseAtual.getPersonagens().add(Mario);
     // Adiciona outros elementos da fase (plataformas, inimigos, etc.)
-    faseAtual.getPersonagens().addAll(fases.get(indice).getPersonagens());
+    faseAtual.getPersonagens().addAll(fases.get(indice).getPersonagens()); //Por que isso esta aqui? by Julio
+    
+    if (indice == 0) {
+        for(int col = 3; col < 8; col++) {
+            Bloco bloco = new Bloco("bloco.png");
+            bloco.setPosicao(10, col);
+            faseAtual.getPersonagens().add(bloco);
+        }
+
+        CanoBillbala inimigo1 = new CanoBillbala("");
+        inimigo1.setPosicao(11, 12);
+        faseAtual.getPersonagens().add(inimigo1);
+    }
 }
 
     public void proximaFase() {
@@ -221,7 +233,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
                 + (Mario.getPosicao().getLinha()));
 
-        //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+        repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
 
     public void mousePressed(MouseEvent e) {
