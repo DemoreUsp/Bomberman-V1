@@ -20,6 +20,7 @@ public abstract class Personagem implements Serializable {
     protected Posicao pPosicao;
     protected boolean bTransponivel; /*Pode passar por cima?*/
     protected boolean bMortal;       /*Se encostar, morre?*/
+    protected int vidas;
 
     public boolean isbMortal() {
         return bMortal;
@@ -30,6 +31,7 @@ public abstract class Personagem implements Serializable {
         this.pPosicao = new Posicao(1, 1);
         this.bTransponivel = true;
         this.bMortal = false;
+        this.vidas = 1;
         try {
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
             Image img = iImage.getImage();
@@ -46,6 +48,18 @@ public abstract class Personagem implements Serializable {
         /*TODO: Retirar este método para que objetos externos nao possam operar
          diretamente sobre a posição do Personagem*/
         return pPosicao;
+    }
+    
+    public void setMortal(boolean b) {
+        bMortal = b;
+    }
+    
+    public void attVidas(int qt) {
+        vidas += qt;
+    }
+    
+    public int getVidas() {
+        return vidas;
     }
 
     public boolean isbTransponivel() {

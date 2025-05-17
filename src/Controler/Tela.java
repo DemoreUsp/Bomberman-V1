@@ -54,6 +54,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     // Cria o herói primeiro
     Mario = new Heroi("mario.png");
+    Mario.setMortal(true);
     
     // Inicializa o sistema de fases
     this.fases = new ArrayList<>();
@@ -172,7 +173,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         //Teste, mudança de fase funcionando legal, tudo certinho
         Fase fase2 = new Fase(2, new Posicao(5, 5), new Posicao(10,10));
-        for(int col = 0; col < 66; col++) {
+        for(int col = 0; col < 1; col++) {
             Bloco blococol = new Bloco("bloco.png");
             blococol.setPosicao(0, col);
             fase2.adicionarPersonagem(blococol);

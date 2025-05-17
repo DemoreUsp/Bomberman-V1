@@ -8,13 +8,13 @@ public class Fase {
     private ArrayList<Personagem> personagens;
     private Heroi Heroi;
     private Posicao posicaoInicialHeroi;
-    private Posicao PosicaoFinalMario;
+    private Posicao PosicaoFinalHeroi;
     
     public Fase(int numero, Posicao posicaoHeroi, Posicao PFM) {
         this.numero = numero;
         this.personagens = new ArrayList<>();
         this.posicaoInicialHeroi = posicaoHeroi;
-        this.PosicaoFinalMario = PFM;
+        this.PosicaoFinalHeroi = PFM;
     }
     
     public void adicionarPersonagem(Personagem p) {
@@ -42,6 +42,6 @@ public class Fase {
     }
     
     public Posicao getPosicaoFinal() {
-        return PosicaoFinalMario;
+        return PosicaoFinalHeroi;
     }
 }
