@@ -21,7 +21,10 @@ public class ControleDeJogo {
             if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
                 if (pIesimoPersonagem.isbTransponivel()) /*TO-DO: verificar se o personagem eh mortal antes de retirar*/ {
                     if (pIesimoPersonagem.isbMortal())
-                    umaFase.remove(pIesimoPersonagem);
+                        if(pIesimoPersonagem.getVidas() < 1)
+                            umaFase.remove(pIesimoPersonagem);
+                        else
+                            umaFase.get(i).attVidas(-1);
                 }
             }
         }

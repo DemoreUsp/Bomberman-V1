@@ -5,6 +5,9 @@ import Modelos.Fase;
 import Modelos.Bloco;
 import Modelos.CanoBillbala;
 import Modelos.Heroi;
+import Modelos.Koopa;
+import Modelos.Goomba;
+import Modelos.Bowser;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
@@ -167,7 +170,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         // Adicionar inimigos
-        CanoBillbala inimigo1 = new CanoBillbala("");
+        Bowser inimigo1 = new Bowser("bowser.png");
+        inimigo1.attVidas(5);
+        inimigo1.setMortal(true);
         inimigo1.setPosicao(9, 12);
         fase1.adicionarPersonagem(inimigo1);
         
@@ -216,7 +221,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if(faseAtualIndex < fases.size() - 1) {
             carregarFase(++faseAtualIndex);
         } else {
-            // Jogo completado
+            System.out.println("Parabens");
         }
     }
 
@@ -243,6 +248,14 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             Mario.moveRight();
         }
         this.atualizaCamera();
+        for(int i = 0; i < faseAtual.getPersonagens().size(); i++) {
+            if(faseAtual.getPersonagens().get(i).getPosicao().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
+                    faseAtual.getPersonagens().get(i).getPosicao().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
+                faseAtual.getHeroi().attVidas(-1);
+                if(faseAtual.getHeroi().getVidas() < 1)
+                    System.out.println("Game over");
+            }
+        }
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
                 + (Mario.getPosicao().getLinha()));
 
