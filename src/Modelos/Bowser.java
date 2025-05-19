@@ -22,9 +22,9 @@ public class Bowser extends Personagem {
     try {
         iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
         Image img = iImage.getImage();
-        BufferedImage bi = new BufferedImage(3*Consts.CELL_SIDE, 3*Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
-        g.drawImage(img, 0, 0, 3*Consts.CELL_SIDE, 3*Consts.CELL_SIDE, null);
+        g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
         iImage = new ImageIcon(bi);
     } catch (IOException ex) {
         System.out.println(ex.getMessage());
@@ -35,11 +35,11 @@ public class Bowser extends Personagem {
         if (iContador == 5) {
             iContador = 0;
             if (bRight) {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
-                System.out.println(this.getPosicao().getLinha() + ' ' + this.getPosicao().getColuna());
+                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 3);
+                System.out.println("Linha: " + this.getPosicao().getLinha() + "\nColuna: " + this.getPosicao().getColuna());
             } else {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
-                System.out.println(this.getPosicao().getLinha() + ' ' + this.getPosicao().getColuna());
+                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 3);
+                System.out.println("Linha: " + this.getPosicao().getLinha() + "\nColuna: " + this.getPosicao().getColuna());
             }
 
             bRight = !bRight;

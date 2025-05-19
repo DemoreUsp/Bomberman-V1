@@ -191,7 +191,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         //Teste, mudança de fase funcionando legal, tudo certinho
         Fase fase2 = new Fase(2, new Posicao(5, 5), new Posicao(10,10));
-        for(int col = 0; col < 25; col++) {
+        for(int col = 0; col < 50; col++) {
             Bloco blococol = new Bloco("bloco.png");
             blococol.setPosicao(0, col);
             fase2.adicionarMapStuff(blococol);
@@ -205,7 +205,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Bowser inimigo2 = new Bowser("bowser.png");
         inimigo2.attVidas(5);
         inimigo2.setMortal(true);
-        inimigo2.setPosicao(7, 22);
+        inimigo2.setPosicao(9, 20);
         fase2.adicionarPersonagem(inimigo2);
 
         fases.add(fase1);

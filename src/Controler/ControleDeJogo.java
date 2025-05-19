@@ -25,7 +25,7 @@ public class ControleDeJogo {
             if (umaFase.getPersonagens().get(i).getPosicao().getLinha() + 1 == hero.getPosicao().getLinha() &&
                     umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
                 if (pIesimoPersonagem.isbTransponivel()) /*TO-DO: verificar se o personagem eh mortal antes de retirar*/ {
-                    if (pIesimoPersonagem.isbMortal())
+                    if (pIesimoPersonagem.isbMortal())  
                         if(pIesimoPersonagem.getVidas() < 1)
                             umaFase.getPersonagens().remove(pIesimoPersonagem);
                         else
