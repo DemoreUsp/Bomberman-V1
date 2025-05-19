@@ -88,7 +88,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public boolean ehPosicaoValida(Posicao p) {
-        return cj.ehPosicaoValida(this.faseAtual.getPersonagens(), p);
+        return cj.ehPosicaoValida(this.faseAtual, p);
     }
 
     public void addPersonagem(Personagem umPersonagem) {
@@ -97,6 +97,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void removePersonagem(Personagem umPersonagem) {
         faseAtual.getPersonagens().remove(umPersonagem);
+    }
+    
+    public boolean estaNoChao() {
+        int lin = Mario.getPosicao().getLinha();
+        int col = Mario.getPosicao().getColuna();
+        Personagem b;
+        for(int i = 0; i < faseAtual.getMapStuff().size(); i++) {
+            b = faseAtual.getMapStuff().get(i);
+            if(b.getPosicao().equals()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Graphics getGraphicsBuffer() {
@@ -129,8 +142,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             }
         }
         if (!this.faseAtual.getPersonagens().isEmpty()) {
-            this.cj.desenhaTudo(faseAtual.getPersonagens(), faseAtual.getHeroi());
-            this.cj.processaTudo(faseAtual.getPersonagens(), faseAtual.getHeroi());
+            this.cj.desenhaTudo(faseAtual, faseAtual.getHeroi());
+            this.cj.processaTudo(faseAtual, faseAtual.getHeroi());
         }
 
         g.dispose();
@@ -138,6 +151,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
+        Mario.atualizarFisica();
     }
 
     private void atualizaCamera() {
@@ -155,42 +169,42 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     
     private void inicializarFases() {
         Posicao inicioFase1 = new Posicao(9, 3);
-        Posicao finalFase1 = new Posicao(9, 19);
+        Posicao finalFase1 = new Posicao(9, 55);
         Fase fase1 = new Fase(1, inicioFase1, finalFase1);
         
-        for(int col = 0; col < 66; col++) {
+        for(int col = 0; col < 65; col++) {
             Bloco blococol = new Bloco("bloco.png");
             blococol.setPosicao(10, col);
-            fase1.adicionarPersonagem(blococol);
+            fase1.adicionarMapStuff(blococol);
             for(int lin = 10; lin < 18; lin++) {
                 Bloco blocolin = new Bloco("bloco.png");
                 blocolin.setPosicao(lin, col);
-                fase1.adicionarPersonagem(blocolin);
+                fase1.adicionarMapStuff(blocolin);
             }
         }
         
         // Adicionar inimigos
-        Bowser inimigo1 = new Bowser("bowser.png");
-        inimigo1.attVidas(5);
-        inimigo1.setMortal(true);
-        inimigo1.setPosicao(9, 12);
+        CanoBillbala inimigo1 = new CanoBillbala("");
+        inimigo1.setPosicao(9, 65);
         fase1.adicionarPersonagem(inimigo1);
         
         //Teste, mudança de fase funcionando legal, tudo certinho
         Fase fase2 = new Fase(2, new Posicao(5, 5), new Posicao(10,10));
-        for(int col = 0; col < 1; col++) {
+        for(int col = 0; col < 25; col++) {
             Bloco blococol = new Bloco("bloco.png");
             blococol.setPosicao(0, col);
-            fase2.adicionarPersonagem(blococol);
-            for(int lin = 0; lin < 18; lin++) {
+            fase2.adicionarMapStuff(blococol);
+            for(int lin = 10; lin < 18; lin++) {
                 Bloco blocolin = new Bloco("bloco.png");
                 blocolin.setPosicao(lin, col);
-                fase2.adicionarPersonagem(blocolin);
+                fase2.adicionarMapStuff(blocolin);
             }
         }
         
-        CanoBillbala inimigo2 = new CanoBillbala("");
-        inimigo2.setPosicao(9, 12);
+        Bowser inimigo2 = new Bowser("bowser.png");
+        inimigo2.attVidas(5);
+        inimigo2.setMortal(true);
+        inimigo2.setPosicao(7, 22);
         fase2.adicionarPersonagem(inimigo2);
 
         fases.add(fase1);
@@ -202,7 +216,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     faseAtual = fases.get(indice);
     
     //Limpa personagens da tela
-    System.out.println(faseAtual.getPersonagens().get(1));
     //faseAtual.getPersonagens().clear();
     
     // Posiciona Mario na posição inicial da fase
@@ -258,7 +271,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
                 + (Mario.getPosicao().getLinha()));
-
+        
         repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
 

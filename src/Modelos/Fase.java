@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Fase {
     private int numero;
+    private ArrayList<Personagem> mapStuff;
     private ArrayList<Personagem> personagens;
     private Heroi Heroi;
     private Posicao posicaoInicialHeroi;
@@ -13,12 +14,17 @@ public class Fase {
     public Fase(int numero, Posicao posicaoHeroi, Posicao PFM) {
         this.numero = numero;
         this.personagens = new ArrayList<>();
+        this.mapStuff = new ArrayList<>();
         this.posicaoInicialHeroi = posicaoHeroi;
         this.PosicaoFinalHeroi = PFM;
     }
     
     public void adicionarPersonagem(Personagem p) {
         personagens.add(p);
+    }
+    
+    public void adicionarMapStuff(Personagem p) {
+        mapStuff.add(p);
     }
     
     public void adicionarHeroi(Heroi p) {
@@ -31,6 +37,10 @@ public class Fase {
 
     public ArrayList<Personagem> getPersonagens() {
         return this.personagens;
+    }
+    
+    public ArrayList<Personagem> getMapStuff() {
+        return this.mapStuff;
     }
 
     public Posicao getPosicaoInicialHeroi() {
