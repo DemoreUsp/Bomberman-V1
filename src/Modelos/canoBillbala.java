@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class CanoBillbala extends Personagem implements Serializable{
     private int iContaIntervalos;
+    private Personagem f;
     
     public CanoBillbala(String sNomeImagePNG) {
         super(sNomeImagePNG);
@@ -23,8 +24,13 @@ public class CanoBillbala extends Personagem implements Serializable{
         if(this.iContaIntervalos == Consts.TIMER){
             this.iContaIntervalos = 0;
             Billbala f = new Billbala("billbala.png");
-            f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna()+1);
+            f.setPosicao(pPosicao.getLinha()-2,pPosicao.getColuna()+1);
             Desenho.acessoATelaDoJogo().addPersonagem(f);
         }
-    }    
+    }
+
+    public Personagem getBillBala() {
+        return f;
+    }
+    
 }
