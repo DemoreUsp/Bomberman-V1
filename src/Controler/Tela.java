@@ -263,19 +263,11 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             Mario.moveRight();
         }
         this.atualizaCamera();
-        for(int i = 0; i < faseAtual.getPersonagens().size(); i++) {
-                if(faseAtual.getPersonagens().get(i).getPosicao().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
-                        faseAtual.getPersonagens().get(i).getPosicao().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
-                faseAtual.getHeroi().attVidas(-1);
-                if(faseAtual.getHeroi().getVidas() < 1) {
-                    System.out.println("Game over");
-                    System.out.println(faseAtual.getPersonagens().get(i).getClass());
-                }
-            }
-        }
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
                 + (Mario.getPosicao().getLinha()));
-        
+        if(Mario.getVidas() < 0) {
+            System.out.println("Game over bobao");
+        }
         repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
 

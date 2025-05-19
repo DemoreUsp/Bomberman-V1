@@ -36,8 +36,10 @@ public class Bowser extends Personagem {
             iContador = 0;
             if (bRight) {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
+                System.out.println(this.getPosicao().getLinha() + ' ' + this.getPosicao().getColuna());
             } else {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
+                System.out.println(this.getPosicao().getLinha() + ' ' + this.getPosicao().getColuna());
             }
 
             bRight = !bRight;

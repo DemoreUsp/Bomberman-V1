@@ -22,7 +22,7 @@ public class ControleDeJogo {
         Personagem pIesimoPersonagem;
         for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
             pIesimoPersonagem = umaFase.getPersonagens().get(i);
-            if (umaFase.getPersonagens().get(i).getPosicao().getLinha() == hero.getPosicao().getLinha() &&
+            if (umaFase.getPersonagens().get(i).getPosicao().getLinha() + 1 == hero.getPosicao().getLinha() &&
                     umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
                 if (pIesimoPersonagem.isbTransponivel()) /*TO-DO: verificar se o personagem eh mortal antes de retirar*/ {
                     if (pIesimoPersonagem.isbMortal())
@@ -31,6 +31,10 @@ public class ControleDeJogo {
                         else
                             umaFase.getPersonagens().get(i).attVidas(-1);
                 }
+            }
+            else if(umaFase.getPersonagens().get(i).getPosicao().getLinha() == hero.getPosicao().getLinha() &&
+                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
+                hero.attVidas(-1);
             }
         }
         //for (int i = 1; i < umaFase.size(); i++) {
