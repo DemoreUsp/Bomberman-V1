@@ -186,7 +186,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         // Adicionar inimigos
         CanoBillbala inimigo1 = new CanoBillbala("");
-        inimigo1.setPosicao(9, 65);
+        inimigo1.setPosicao(9, 22);
         fase1.adicionarPersonagem(inimigo1);
         
         //Teste, mudança de fase funcionando legal, tudo certinho
@@ -264,11 +264,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         this.atualizaCamera();
         for(int i = 0; i < faseAtual.getPersonagens().size(); i++) {
-            if(faseAtual.getPersonagens().get(i).getPosicao().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
-                    faseAtual.getPersonagens().get(i).getPosicao().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
+                if(faseAtual.getPersonagens().get(i).getPosicao().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
+                        faseAtual.getPersonagens().get(i).getPosicao().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
                 faseAtual.getHeroi().attVidas(-1);
-                if(faseAtual.getHeroi().getVidas() < 1)
+                if(faseAtual.getHeroi().getVidas() < 1) {
                     System.out.println("Game over");
+                    System.out.println(faseAtual.getPersonagens().get(i).getClass());
+                }
             }
         }
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
