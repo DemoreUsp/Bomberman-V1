@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
     private ArrayList<Fase> fases;
@@ -99,18 +100,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual.getPersonagens().remove(umPersonagem);
     }
     
-    public boolean estaNoChao() {
-        int lin = Mario.getPosicao().getLinha();
-        int col = Mario.getPosicao().getColuna();
-        Personagem b;
-        for(int i = 0; i < faseAtual.getMapStuff().size(); i++) {
-            b = faseAtual.getMapStuff().get(i);
-            if(b.getPosicao().getLinha() == lin + 1) {
+    // Em Tela.java
+    public boolean estaNoChao(Personagem personagem) {
+        int lin = personagem.getPosicao().getLinha();
+        int col = personagem.getPosicao().getColuna();
+    
+        // Verifica se há bloco sólido abaixo
+        for (Personagem bloco : faseAtual.getMapStuff()) {
+        if (bloco.getPosicao().getLinha() == lin + 1 && 
+                bloco.getPosicao().getColuna() == col && 
+                !bloco.isbTransponivel()) {
                 return true;
             }
         }
         return false;
-    }
+}
 
     public Graphics getGraphicsBuffer() {
         return g2;
@@ -169,48 +173,89 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
     
     private void inicializarFases() {
-        Posicao inicioFase1 = new Posicao(9, 3);
-        Posicao finalFase1 = new Posicao(9, 55);
-        Fase fase1 = new Fase(1, inicioFase1, finalFase1);
-        
-        for(int col = 0; col < 65; col++) {
-            Bloco blococol = new Bloco("bloco.png");
-            blococol.setPosicao(10, col);
-            fase1.adicionarMapStuff(blococol);
-            for(int lin = 10; lin < 18; lin++) {
-                Bloco blocolin = new Bloco("bloco.png");
-                blocolin.setPosicao(lin, col);
-                fase1.adicionarMapStuff(blocolin);
-            }
-        }
-        
-        // Adicionar inimigos
-        CanoBillbala inimigo1 = new CanoBillbala("");
-        inimigo1.setPosicao(9, 65);
-        fase1.adicionarPersonagem(inimigo1);
-        
-        //Teste, mudança de fase funcionando legal, tudo certinho
-        Fase fase2 = new Fase(2, new Posicao(5, 5), new Posicao(10,10));
-        for(int col = 0; col < 25; col++) {
-            Bloco blococol = new Bloco("bloco.png");
-            blococol.setPosicao(0, col);
-            fase2.adicionarMapStuff(blococol);
-            for(int lin = 10; lin < 18; lin++) {
-                Bloco blocolin = new Bloco("bloco.png");
-                blocolin.setPosicao(lin, col);
-                fase2.adicionarMapStuff(blocolin);
-            }
-        }
-        
-        Bowser inimigo2 = new Bowser("bowser.png");
-        inimigo2.attVidas(5);
-        inimigo2.setMortal(true);
-        inimigo2.setPosicao(7, 22);
-        fase2.adicionarPersonagem(inimigo2);
-
-        fases.add(fase1);
-        fases.add(fase2);
+    // Fase 1 - Tutorial de Pulo
+    Fase fase1 = new Fase(1, new Posicao(12, 1), new Posicao(10, 15));
+    // Plataforma principal
+    for(int col = 0; col < 20; col++) {
+        fase1.adicionarMapStuff(new Bloco("bloco.png").setPosicao(13, col));
     }
+    // Plataforma elevada (obriga o pulo)
+    criarPlataformaHorizontal(fase1, 10, 5, 8);
+    fase1.adicionarPersonagem(new Goomba("goomba.png").setPosicao(10, 12));
+
+    // Fase 2 - Duas Plataformas
+    Fase fase2 = new Fase(2, new Posicao(12, 1), new Posicao(10, 15));
+    for(int col = 0; col < 20; col++) {
+        fase2.adicionarMapStuff(new Bloco("bloco.png").setPosicao(13, col));
+    }
+    criarPlataformaHorizontal(fase2, 10, 3, 5);
+    criarPlataformaHorizontal(fase2, 8, 10, 12);
+    fase2.adicionarPersonagem(new Goomba("goomba.png").setPosicao(10, 7));
+    fase2.adicionarPersonagem(new Koopa("koopa.png").setPosicao(8, 14));
+
+    // Fase 3 - Plataformas em Escada
+    Fase fase3 = new Fase(3, new Posicao(12, 1), new Posicao(6, 18));
+    for(int col = 0; col < 20; col++) {
+        fase3.adicionarMapStuff(new Bloco("bloco.png").setPosicao(13, col));
+    }
+    criarEscada(fase3, 2, 10, 12, true); // Escada para direita
+    criarEscada(fase3, 15, 8, 10, false); // Escada para esquerda
+    fase3.adicionarPersonagem(new Goomba("goomba.png").setPosicao(10, 5));
+    fase3.adicionarPersonagem(new Koopa("koopa.png").setPosicao(8, 12));
+    fase3.adicionarPersonagem(new Goomba("goomba.png").setPosicao(6, 17));
+
+    // Fase 4 - Plataformas Quebradas
+    Fase fase4 = new Fase(4, new Posicao(12, 1), new Posicao(7, 19));
+    for(int col = 0; col < 20; col++) {
+        if(col % 3 != 0) { // Cria buracos regulares
+            fase4.adicionarMapStuff(new Bloco("bloco.png").setPosicao(13, col));
+        }
+    }
+    criarPlataformaHorizontal(fase4, 9, 4, 6);
+    criarPlataformaHorizontal(fase4, 7, 12, 14);
+    fase4.adicionarPersonagem(new Goomba("goomba.png").setPosicao(9, 5));
+    fase4.adicionarPersonagem(new Koopa("koopa.png").setPosicao(7, 13));
+    fase4.adicionarPersonagem(new Goomba("goomba.png").setPosicao(13, 18));
+
+    // Fase 5 - Desafio Final
+    Fase fase5 = new Fase(5, new Posicao(12, 1), new Posicao(5, 19));
+    for(int col = 0; col < 20; col++) {
+        fase5.adicionarMapStuff(new Bloco("bloco.png").setPosicao(13, col));
+    }
+    criarPlataformaVertical(fase5, 3, 9, 11);
+    criarPlataformaVertical(fase5, 15, 6, 8);
+    fase5.adicionarPersonagem(new Goomba("goomba.png").setPosicao(9, 4));
+    fase5.adicionarPersonagem(new Koopa("koopa.png").setPosicao(6, 15));
+    fase5.adicionarPersonagem(new Goomba("goomba.png").setPosicao(11, 9));
+    fase5.adicionarPersonagem(new Koopa("koopa.png").setPosicao(5, 18));
+    fase5.adicionarPersonagem(new Bowser("bowser.png").setPosicao(5, 19));
+
+    fases.add(fase1);
+    fases.add(fase2);
+    fases.add(fase3);
+    fases.add(fase4);
+    fases.add(fase5);
+}
+
+// Métodos auxiliares para construção
+private void criarPlataformaHorizontal(Fase fase, int linha, int colInicio, int colFim) {
+    for(int col = colInicio; col <= colFim; col++) {
+        fase.adicionarMapStuff(new Bloco("bloco.png").setPosicao(linha, col));
+    }
+}
+
+private void criarEscada(Fase fase, int colBase, int linhaInicio, int linhaFim, boolean direita) {
+    for(int lin = linhaInicio; lin <= linhaFim; lin++) {
+        int col = colBase + (direita ? (lin - linhaInicio) : -(lin - linhaInicio));
+        fase.adicionarMapStuff(new Bloco("bloco.png").setPosicao(lin, col));
+    }
+}
+
+private void criarPlataformaVertical(Fase fase, int coluna, int linhaInicio, int linhaFim) {
+    for(int lin = linhaInicio; lin <= linhaFim; lin++) {
+        fase.adicionarMapStuff(new Bloco("bloco.png").setPosicao(lin, coluna));
+    }
+}
     
     private void carregarFase(int indice) {
     faseAtualIndex = indice;
@@ -232,12 +277,25 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 }
 
     public void proximaFase() {
-        if(faseAtualIndex < fases.size() - 1) {
-            carregarFase(++faseAtualIndex);
-        } else {
-            System.out.println("Parabens");
-        }
+    if(faseAtualIndex < fases.size() - 1) {
+        faseAtual.marcarComoCompleta();
+        carregarFase(++faseAtualIndex);
+        mostrarMensagemFase();
+    } else {
+        JOptionPane.showMessageDialog(this, "Você venceu o jogo!");
     }
+}
+
+    private void mostrarMensagemFase() {
+    String[] mensagens = {
+        "Fase 1: Aprenda a pular!",
+        "Fase 2: Cuidado com os Koopas!",
+        "Fase 3: Use as escadas!",
+        "Fase 4: Atenção aos buracos!",
+        "Fase Final: Enfrente Bowser!"
+    };
+    JOptionPane.showMessageDialog(this, mensagens[faseAtualIndex]);
+}
 
     public void go() {
         TimerTask task = new TimerTask() {
@@ -253,7 +311,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (e.getKeyCode() == KeyEvent.VK_C) {
             carregarFase(faseAtualIndex); 
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if(estaNoChao())
+            if(estaNoChao(Mario))
                 Mario.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             Mario.moveDown();
