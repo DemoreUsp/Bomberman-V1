@@ -105,11 +105,11 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Personagem b;
         for(int i = 0; i < faseAtual.getMapStuff().size(); i++) {
             b = faseAtual.getMapStuff().get(i);
-            if(b.getPosicao().equals()) {
-                return false;
+            if(b.getPosicao().getLinha() == lin + 1) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public Graphics getGraphicsBuffer() {
@@ -151,6 +151,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
+        
         Mario.atualizarFisica();
     }
 
@@ -252,7 +253,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (e.getKeyCode() == KeyEvent.VK_C) {
             carregarFase(faseAtualIndex); 
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            Mario.moveUp();
+            if(estaNoChao())
+                Mario.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             Mario.moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
