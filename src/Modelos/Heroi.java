@@ -21,7 +21,6 @@ public class Heroi extends Personagem implements Serializable{
         this.pPosicao.volta();
     }
     
-    
     public boolean setPosicao(int linha, int coluna){
         if(this.pPosicao.setPosicao(linha, coluna)){
             if (!Desenho.acessoATelaDoJogo().ehPosicaoValida(this.getPosicao())) {
@@ -42,7 +41,7 @@ public class Heroi extends Personagem implements Serializable{
     }
     
     public boolean moveUp() {
-        if(super.moveUp())
+        if(super.moveUp(2))
             return validaPosicao();
         return false;
     }

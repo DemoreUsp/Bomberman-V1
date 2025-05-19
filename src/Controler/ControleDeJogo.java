@@ -2,26 +2,33 @@ package Controler;
 
 import Modelos.Personagem;
 import Modelos.Heroi;
-import auxiliar.Posicao;
+import Modelos.Fase;
+import Auxiliar.Posicao;
 import java.util.ArrayList;
 
 public class ControleDeJogo {
     
-    public void desenhaTudo(ArrayList<Personagem> e) {
-        for (int i = 0; i < e.size(); i++) {
-            e.get(i).autoDesenho();
+    public void desenhaTudo(Fase umaFase, Heroi hero) {
+        hero.autoDesenho();
+        for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
+            umaFase.getPersonagens().get(i).autoDesenho();
+        }
+        for (int i = 0; i < umaFase.getMapStuff().size(); i++) {
+            umaFase.getMapStuff().get(i).autoDesenho();
         }
     }
     
-    public void processaTudo(ArrayList<Personagem> umaFase) {
-        Heroi hero = (Heroi) umaFase.get(0);
+    public void processaTudo(Fase umaFase, Heroi hero) {
         Personagem pIesimoPersonagem;
-        for (int i = 1; i < umaFase.size(); i++) {
-            pIesimoPersonagem = umaFase.get(i);
+        for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
+            pIesimoPersonagem = umaFase.getPersonagens().get(i);
             if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
                 if (pIesimoPersonagem.isbTransponivel()) /*TO-DO: verificar se o personagem eh mortal antes de retirar*/ {
                     if (pIesimoPersonagem.isbMortal())
-                    umaFase.remove(pIesimoPersonagem);
+                        if(pIesimoPersonagem.getVidas() < 1)
+                            umaFase.getPersonagens().remove(pIesimoPersonagem);
+                        else
+                            umaFase.getPersonagens().get(i).attVidas(-1);
                 }
             }
         }
@@ -34,12 +41,22 @@ public class ControleDeJogo {
     }
 
     /*Retorna true se a posicao p é válida para Hero com relacao a todos os personagens no array*/
-    public boolean ehPosicaoValida(ArrayList<Personagem> umaFase, Posicao p) {
+    public boolean ehPosicaoValida(Fase umaFase, Posicao p) {
         Personagem pIesimoPersonagem;
-        for (int i = 1; i < umaFase.size(); i++) {
-            pIesimoPersonagem = umaFase.get(i);
+        for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
+            pIesimoPersonagem = umaFase.getPersonagens().get(i);
             if (!pIesimoPersonagem.isbTransponivel()) {
                 if (pIesimoPersonagem.getPosicao().igual(p)) {
+                    return false;
+                }
+            }
+        }
+        
+        Personagem dIesimoPersonagem;
+        for (int i = 0;i < umaFase.getMapStuff().size(); i++) {
+            dIesimoPersonagem = umaFase.getMapStuff().get(i);
+            if (!dIesimoPersonagem.isbTransponivel()) {
+                if (dIesimoPersonagem.getPosicao().igual(p)) {
                     return false;
                 }
             }
