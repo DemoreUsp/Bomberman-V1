@@ -39,6 +39,7 @@ public class ControleDeJogo {
             else if(umaFase.getPersonagens().get(i).getPosicao().getLinha() == hero.getPosicao().getLinha() &&
                     umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
                 hero.setVidas(hero.getVidas() - 1);
+                hero.moveUp();
             }
         }
         //for (int i = 1; i < umaFase.size(); i++) {

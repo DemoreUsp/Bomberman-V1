@@ -144,6 +144,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
+        cj.processaTudo(faseAtual, faseAtual.getHeroi());
+        if(Mario.getVidas() <= 0) {
+            System.out.println("Game Over\n");
+            Mario.setPosicao(faseAtual.getPosicaoInicialHeroi().getLinha(), faseAtual.getPosicaoInicialHeroi().getColuna());
+            Mario.setVidas(1);
+            System.out.println("Vidas: " + Mario.getVidas());
+        }
         if (!this.faseAtual.getPersonagens().isEmpty()) {
             this.cj.desenhaTudo(faseAtual, faseAtual.getHeroi());
             this.cj.processaTudo(faseAtual, faseAtual.getHeroi());
@@ -173,12 +180,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if(faseAtual.getPosicaoFinal().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
                 faseAtual.getPosicaoFinal().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
             proximaFase();
-        }
-        if(Mario.getVidas() < 0) {
-            System.out.println("Game Over\n");
-            Mario.setPosicao(faseAtual.getPosicaoInicialHeroi().getLinha(), faseAtual.getPosicaoInicialHeroi().getColuna());
-            Mario.setVidas(1);
-            System.out.println("Vidas: " + Mario.getVidas());
         }
     }
     
@@ -240,8 +241,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual.getPosicaoInicialHeroi().getColuna()
     );
     
-    Mario.setVidas(20);
-    
+    Mario.setVidas(2);
     // Adiciona Mario e os elementos da fase
     faseAtual.adicionarHeroi(Mario);
     // Adiciona outros elementos da fase (plataformas, inimigos, etc.)
@@ -260,7 +260,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public void go() {
         TimerTask task = new TimerTask() {
             public void run() {
-                cj.processaTudo(faseAtual, faseAtual.getHeroi());
                 repaint();
             }
         };
