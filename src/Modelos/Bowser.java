@@ -10,6 +10,9 @@ import javax.swing.ImageIcon;
 
 public class Bowser extends Personagem {
     private boolean bRight;
+    private Rectangle up;
+    private Rectangle left;
+    private Rectangle right;
     int iContador;
 
     public Bowser(String sNomeImagePNG) {
@@ -37,10 +40,8 @@ public class Bowser extends Personagem {
             iContador = 0;
             if (bRight) {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 3);
-                System.out.println("Linha: " + this.getPosicao().getLinha() + "\nColuna: " + this.getPosicao().getColuna());
             } else {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 3);
-                System.out.println("Linha: " + this.getPosicao().getLinha() + "\nColuna: " + this.getPosicao().getColuna());
             }
 
             bRight = !bRight;
@@ -66,6 +67,24 @@ public class Bowser extends Personagem {
     	int y = linha * cellSize + margem;
 
     	return new Rectangle(x, y, largura, altura);
-    }
+    } 
     
+    @Override
+    public Rectangle getUpHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+    	int coluna = this.pPosicao.getColuna();
+    	int linha = this.pPosicao.getLinha()-1;
+
+    	int larguraEmCelulas = 2;
+    	int alturaEmCelulas = 1;
+    	int margem = 4;
+
+    	int largura = larguraEmCelulas * cellSize - 2 * margem;
+    	int altura = alturaEmCelulas * cellSize - 2 * margem;
+
+    	int x = coluna * cellSize + margem;
+    	int y = linha * cellSize + margem;
+
+    	return new Rectangle(x, y, largura, altura);
+    }
 }

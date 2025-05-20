@@ -25,7 +25,7 @@ public class CanoBillbala extends Personagem implements Serializable{
         if(this.iContaIntervalos == Consts.TIMER){
             this.iContaIntervalos = 0;
             Billbala f = new Billbala("billbala.png");
-            f.setPosicao(pPosicao.getLinha()-1,pPosicao.getColuna()+1);
+            f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna()+1);
             f.setMortal(true);
             Desenho.acessoATelaDoJogo().addPersonagem(f);
         }

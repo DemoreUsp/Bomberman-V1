@@ -85,6 +85,10 @@ public abstract class Personagem implements Serializable {
         return null;
     }
     
+    public Rectangle getUpHitbox() {
+        return getHitbox();
+    }
+    
     public void drawHitbox(int cameraOffsetX, int cameraOffsetY, Graphics g2) {
         Rectangle hitbox = getHitbox();
     

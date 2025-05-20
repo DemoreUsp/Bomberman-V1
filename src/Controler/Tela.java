@@ -219,7 +219,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         inimigo2.setVidas(5);
         inimigo2.setMortal(true);
         inimigo2.setbTransponivel(true);
-        inimigo2.setPosicao(9, 20);
+        inimigo2.setPosicao(8, 20);
         fase2.adicionarPersonagem(inimigo2);
         
         fases.add(fase1);

@@ -3,6 +3,7 @@ package Modelos;
 import Auxiliar.Desenho;
 import Controler.Tela;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 public class Casco extends Personagem implements Serializable{

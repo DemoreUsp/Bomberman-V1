@@ -28,8 +28,9 @@ public class ControleDeJogo {
         }
         for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
             pIesimoPersonagem = umaFase.getPersonagens().get(i);
-            if (umaFase.getPersonagens().get(i).getPosicao().getLinha() - 1 == hero.getPosicao().getLinha() &&
-                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
+            if (/*umaFase.getPersonagens().get(i).getPosicao().getLinha() - 1 == hero.getPosicao().getLinha() &&
+                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()*/
+                    umaFase.getPersonagens().get(i).getUpHitbox().intersects(hero.getHitbox())) {
                 if (pIesimoPersonagem.isbTransponivel()) /*TO-DO: verificar se o personagem eh mortal antes de retirar*/ {
                     if (pIesimoPersonagem.isbMortal()) {
                         umaFase.getPersonagens().get(i).setVidas(umaFase.getPersonagens().get(i).getVidas() - 1);

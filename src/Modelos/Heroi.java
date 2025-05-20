@@ -61,7 +61,7 @@ public class Heroi extends Personagem implements Serializable{
     }
     
     public boolean moveUp() {
-        if(super.moveUp(3))
+        if(super.moveUp(4))
             return validaPosicao();
         return false;
     }
