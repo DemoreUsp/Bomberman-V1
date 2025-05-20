@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
     private ArrayList<Fase> fases;
@@ -101,6 +102,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual.getPersonagens().remove(umPersonagem);
     }
     
+
     public boolean estaNoChao() {
         int lin = Mario.getPosicao().getLinha();
         int col = Mario.getPosicao().getColuna();
@@ -109,11 +111,12 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             b = faseAtual.getMapStuff().get(i);
             if(b.getPosicao().getLinha() == lin + 1 && b
                     .getPosicao().getColuna() == col) {
+
                 return true;
             }
         }
         return false;
-    }
+}
 
     public Graphics getGraphicsBuffer() {
         return g2;
@@ -183,6 +186,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
     
     private void inicializarFases() {
+
         Posicao inicioFase1 = new Posicao(9, 3);
         Posicao finalFase1 = new Posicao(9, 55);
         Fase fase1 = new Fase(1, inicioFase1, finalFase1);
@@ -225,7 +229,53 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         fases.add(fase1);
         fases.add(fase2);
+
     }
+    criarPlataformaHorizontal(fase4, 9, 4, 6);
+    criarPlataformaHorizontal(fase4, 7, 12, 14);
+    fase4.adicionarPersonagem(new Goomba("goomba.png").setPosicao(9, 5));
+    fase4.adicionarPersonagem(new Koopa("koopa.png").setPosicao(7, 13));
+    fase4.adicionarPersonagem(new Goomba("goomba.png").setPosicao(13, 18));
+
+    // Fase 5 - Desafio Final
+    Fase fase5 = new Fase(5, new Posicao(12, 1), new Posicao(5, 19));
+    for(int col = 0; col < 20; col++) {
+        fase5.adicionarMapStuff(new Bloco("bloco.png").setPosicao(13, col));
+    }
+    criarPlataformaVertical(fase5, 3, 9, 11);
+    criarPlataformaVertical(fase5, 15, 6, 8);
+    fase5.adicionarPersonagem(new Goomba("goomba.png").setPosicao(9, 4));
+    fase5.adicionarPersonagem(new Koopa("koopa.png").setPosicao(6, 15));
+    fase5.adicionarPersonagem(new Goomba("goomba.png").setPosicao(11, 9));
+    fase5.adicionarPersonagem(new Koopa("koopa.png").setPosicao(5, 18));
+    fase5.adicionarPersonagem(new Bowser("bowser.png").setPosicao(5, 19));
+
+    fases.add(fase1);
+    fases.add(fase2);
+    fases.add(fase3);
+    fases.add(fase4);
+    fases.add(fase5);
+}
+
+// Métodos auxiliares para construção
+private void criarPlataformaHorizontal(Fase fase, int linha, int colInicio, int colFim) {
+    for(int col = colInicio; col <= colFim; col++) {
+        fase.adicionarMapStuff(new Bloco("bloco.png").setPosicao(linha, col));
+    }
+}
+
+private void criarEscada(Fase fase, int colBase, int linhaInicio, int linhaFim, boolean direita) {
+    for(int lin = linhaInicio; lin <= linhaFim; lin++) {
+        int col = colBase + (direita ? (lin - linhaInicio) : -(lin - linhaInicio));
+        fase.adicionarMapStuff(new Bloco("bloco.png").setPosicao(lin, col));
+    }
+}
+
+private void criarPlataformaVertical(Fase fase, int coluna, int linhaInicio, int linhaFim) {
+    for(int lin = linhaInicio; lin <= linhaFim; lin++) {
+        fase.adicionarMapStuff(new Bloco("bloco.png").setPosicao(lin, coluna));
+    }
+}
     
     private void carregarFase(int indice) {
     faseAtualIndex = indice;
@@ -249,13 +299,27 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 }
 
     public void proximaFase() {
+
         if(faseAtualIndex < fases.size() - 1) {
             carregarFase(++faseAtualIndex);
             atualizaCamera();
         } else {
             System.out.println("Parabens");
         }
+
     }
+}
+
+    private void mostrarMensagemFase() {
+    String[] mensagens = {
+        "Fase 1: Aprenda a pular!",
+        "Fase 2: Cuidado com os Koopas!",
+        "Fase 3: Use as escadas!",
+        "Fase 4: Atenção aos buracos!",
+        "Fase Final: Enfrente Bowser!"
+    };
+    JOptionPane.showMessageDialog(this, mensagens[faseAtualIndex]);
+}
 
     public void go() {
         TimerTask task = new TimerTask() {
@@ -272,7 +336,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (e.getKeyCode() == KeyEvent.VK_C) {
             carregarFase(faseAtualIndex); 
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if(estaNoChao())
+            if(estaNoChao(Mario))
                 Mario.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             Mario.moveDown();

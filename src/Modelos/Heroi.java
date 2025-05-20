@@ -62,6 +62,13 @@ public class Heroi extends Personagem implements Serializable{
         if(super.moveLeft())
             return validaPosicao();
         return false;
-    }    
+    }
+    
+    public void atualizarFisica() {
+        Tela tela = Desenho.acessoATelaDoJogo();
+        if (!tela.estaNoChao(this)) {
+            this.setPosicao(this.getPosicao().getLinha() + 1, this.getPosicao().getColuna());
+    }
+}
     
 }

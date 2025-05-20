@@ -85,10 +85,6 @@ public abstract class Personagem implements Serializable {
         return new Rectangle(x, y, Consts.CELL_SIDE, Consts.CELL_SIDE);
     }
     
-    public void atualizarFisica() {
-        int velocidadeY = gravidade;
-        this.setPosicao(this.pPosicao.getLinha() + velocidadeY, this.pPosicao.getColuna());
-    }
 
     public boolean setPosicao(int linha, int coluna) {
         return pPosicao.setPosicao(linha, coluna);
