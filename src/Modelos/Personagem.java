@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Rectangle;
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 public abstract class Personagem implements Serializable {
 
@@ -80,9 +82,20 @@ public abstract class Personagem implements Serializable {
     }
     
     public Rectangle getHitbox() {
-        int x = this.pPosicao.getColuna() * Consts.CELL_SIDE;
-        int y = this.pPosicao.getLinha() * Consts.CELL_SIDE;
-        return new Rectangle(x, y, Consts.CELL_SIDE, Consts.CELL_SIDE);
+        return null;
+    }
+    
+    public void drawHitbox(int cameraOffsetX, int cameraOffsetY, Graphics g2) {
+        Rectangle hitbox = getHitbox();
+    
+        if (hitbox != null) {
+            g2.setColor(new Color(255, 0, 0, 70)); // Vermelho com 70% de opacidade
+            g2.fillRect(hitbox.x - cameraOffsetX, hitbox.y - cameraOffsetY, hitbox.width, hitbox.height);
+            g2.setColor(Color.RED);
+            g2.drawRect(hitbox.x - cameraOffsetX, hitbox.y - cameraOffsetY, hitbox.width, hitbox.height);
+            g2.setColor(Color.WHITE);
+            g2.drawString("("+(hitbox.x - cameraOffsetX) +","+(hitbox.y - cameraOffsetY)+")", (hitbox.x - cameraOffsetX), hitbox.y-5);
+        }
     }
     
     public void atualizarFisica() {

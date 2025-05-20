@@ -5,13 +5,16 @@ import Modelos.Heroi;
 import Modelos.Fase;
 import Auxiliar.Posicao;
 import java.util.ArrayList;
+import java.awt.Graphics;
 
 public class ControleDeJogo {
     
-    public void desenhaTudo(Fase umaFase, Heroi hero) {
+    public void desenhaTudo(Fase umaFase, Heroi hero, int cameraX, int cameraY, Graphics g) {
         hero.autoDesenho();
+        hero.drawHitbox(cameraX, cameraY, g);
         for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
             umaFase.getPersonagens().get(i).autoDesenho();
+            umaFase.getPersonagens().get(i).drawHitbox(cameraX, cameraY, g);
         }
         for (int i = 0; i < umaFase.getMapStuff().size(); i++) {
             umaFase.getMapStuff().get(i).autoDesenho();
@@ -36,8 +39,9 @@ public class ControleDeJogo {
                         }
                 }
             }
-            else if(umaFase.getPersonagens().get(i).getPosicao().getLinha() == hero.getPosicao().getLinha() &&
-                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
+            else if(/*umaFase.getPersonagens().get(i).getPosicao().getLinha() == hero.getPosicao().getLinha() &&
+                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()*/
+                    umaFase.getPersonagens().get(i).getHitbox().intersects(hero.getHitbox())) {
                 hero.setVidas(hero.getVidas() - 1);
                 hero.moveUp();
             }
