@@ -59,8 +59,8 @@ public abstract class Personagem implements Serializable {
         bMortal = b;
     }
     
-    public void attVidas(int qt) {
-        vidas += qt;
+    public void setVidas(int qt) {
+        vidas = qt;
     }
     
     public int getVidas() {

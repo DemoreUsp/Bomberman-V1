@@ -20,16 +20,26 @@ public class ControleDeJogo {
     
     public void processaTudo(Fase umaFase, Heroi hero) {
         Personagem pIesimoPersonagem;
+        if(umaFase.getPersonagens().isEmpty()) {
+            return;
+        }
         for (int i = 0; i < umaFase.getPersonagens().size(); i++) {
             pIesimoPersonagem = umaFase.getPersonagens().get(i);
-            if (hero.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
+            if (umaFase.getPersonagens().get(i).getPosicao().getLinha() - 1 == hero.getPosicao().getLinha() &&
+                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
                 if (pIesimoPersonagem.isbTransponivel()) /*TO-DO: verificar se o personagem eh mortal antes de retirar*/ {
-                    if (pIesimoPersonagem.isbMortal())
+                    if (pIesimoPersonagem.isbMortal()) {
+                        umaFase.getPersonagens().get(i).setVidas(umaFase.getPersonagens().get(i).getVidas() - 1);
                         if(pIesimoPersonagem.getVidas() < 1)
                             umaFase.getPersonagens().remove(pIesimoPersonagem);
-                        else
-                            umaFase.getPersonagens().get(i).attVidas(-1);
+                        hero.moveUp();
+                        }
                 }
+            }
+            else if(umaFase.getPersonagens().get(i).getPosicao().getLinha() == hero.getPosicao().getLinha() &&
+                    umaFase.getPersonagens().get(i).getPosicao().getColuna() == hero.getPosicao().getColuna()) {
+                hero.setVidas(hero.getVidas() - 1);
+                hero.moveUp();
             }
         }
         //for (int i = 1; i < umaFase.size(); i++) {

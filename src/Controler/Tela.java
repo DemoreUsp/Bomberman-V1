@@ -39,6 +39,8 @@ import javax.swing.JButton;
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
     private ArrayList<Fase> fases;
     private int faseAtualIndex;
+    private long TEMPO_TIMEOUT = 150;
+    private long ultimoMovimentoHorizontal = 0;
     private Fase faseAtual;
     private Heroi Mario;
     private ControleDeJogo cj = new ControleDeJogo();
@@ -105,7 +107,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Personagem b;
         for(int i = 0; i < faseAtual.getMapStuff().size(); i++) {
             b = faseAtual.getMapStuff().get(i);
-            if(b.getPosicao().getLinha() == lin + 1) {
+            if(b.getPosicao().getLinha() == lin + 1 && b
+                    .getPosicao().getColuna() == col) {
                 return true;
             }
         }
@@ -141,9 +144,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
+        cj.processaTudo(faseAtual, faseAtual.getHeroi());
+        if(Mario.getVidas() <= 0) {
+            System.out.println("Game Over\n");
+            Mario.setPosicao(faseAtual.getPosicaoInicialHeroi().getLinha(), faseAtual.getPosicaoInicialHeroi().getColuna());
+            Mario.setVidas(1);
+            System.out.println("Vidas: " + Mario.getVidas());
+        }
         if (!this.faseAtual.getPersonagens().isEmpty()) {
             this.cj.desenhaTudo(faseAtual, faseAtual.getHeroi());
             this.cj.processaTudo(faseAtual, faseAtual.getHeroi());
+            if(this.faseAtual.getPersonagens().isEmpty()) {
+                carregarFase(0);
+                faseAtualIndex = 0;
+                atualizaCamera();
+            }
         }
 
         g.dispose();
@@ -186,12 +201,12 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         // Adicionar inimigos
         CanoBillbala inimigo1 = new CanoBillbala("");
-        inimigo1.setPosicao(9, 65);
+        inimigo1.setPosicao(9, 22);
         fase1.adicionarPersonagem(inimigo1);
         
         //Teste, mudança de fase funcionando legal, tudo certinho
         Fase fase2 = new Fase(2, new Posicao(5, 5), new Posicao(10,10));
-        for(int col = 0; col < 25; col++) {
+        for(int col = 0; col < 50; col++) {
             Bloco blococol = new Bloco("bloco.png");
             blococol.setPosicao(0, col);
             fase2.adicionarMapStuff(blococol);
@@ -203,11 +218,12 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         Bowser inimigo2 = new Bowser("bowser.png");
-        inimigo2.attVidas(5);
+        inimigo2.setVidas(5);
         inimigo2.setMortal(true);
-        inimigo2.setPosicao(7, 22);
+        inimigo2.setbTransponivel(true);
+        inimigo2.setPosicao(9, 20);
         fase2.adicionarPersonagem(inimigo2);
-
+        
         fases.add(fase1);
         fases.add(fase2);
     }
@@ -225,6 +241,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual.getPosicaoInicialHeroi().getColuna()
     );
     
+    Mario.setVidas(2);
     // Adiciona Mario e os elementos da fase
     faseAtual.adicionarHeroi(Mario);
     // Adiciona outros elementos da fase (plataformas, inimigos, etc.)
@@ -234,6 +251,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public void proximaFase() {
         if(faseAtualIndex < fases.size() - 1) {
             carregarFase(++faseAtualIndex);
+            atualizaCamera();
         } else {
             System.out.println("Parabens");
         }
@@ -258,22 +276,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             Mario.moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            long comparador = System.currentTimeMillis();
+            if(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT) 
+                return;
+            ultimoMovimentoHorizontal = comparador;
             Mario.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            long comparador = System.currentTimeMillis();
+            if(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT) 
+                return;
+            ultimoMovimentoHorizontal = comparador;
             Mario.moveRight();
         }
         this.atualizaCamera();
-        for(int i = 0; i < faseAtual.getPersonagens().size(); i++) {
-            if(faseAtual.getPersonagens().get(i).getPosicao().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
-                    faseAtual.getPersonagens().get(i).getPosicao().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
-                faseAtual.getHeroi().attVidas(-1);
-                if(faseAtual.getHeroi().getVidas() < 1)
-                    System.out.println("Game over");
-            }
-        }
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
                 + (Mario.getPosicao().getLinha()));
-        
         repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
 
