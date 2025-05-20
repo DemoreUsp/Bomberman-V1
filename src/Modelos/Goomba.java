@@ -23,18 +23,15 @@ public class Goomba extends Personagem implements Serializable {
     }
 
     public void autoDesenho() {
-        int andouTudo = 0;
-        if (iContador == 1) {
+        if (iContador == 5) {
             iContador = 0;
-            if (andouTudo < 5) {
+            if (bRight) {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
-                andouTudo++;
             } else {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
-                andouTudo++;
             }
-            if (andouTudo == 10)
-                andouTudo = 0;
+
+            bRight = !bRight;
         }
         super.autoDesenho();
         iContador++;
