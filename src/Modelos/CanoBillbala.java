@@ -4,6 +4,7 @@ import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Controler.Tela;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 public class CanoBillbala extends Personagem implements Serializable{
@@ -24,7 +25,7 @@ public class CanoBillbala extends Personagem implements Serializable{
         if(this.iContaIntervalos == Consts.TIMER){
             this.iContaIntervalos = 0;
             Billbala f = new Billbala("billbala.png");
-            f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna()-1);
+            f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna()+1);
             f.setMortal(true);
             Desenho.acessoATelaDoJogo().addPersonagem(f);
         }
@@ -34,4 +35,22 @@ public class CanoBillbala extends Personagem implements Serializable{
         return f;
     }
     
+    @Override
+    public Rectangle getHitbox() {
+    	int cellSize = Consts.CELL_SIDE;
+    	int coluna = this.pPosicao.getColuna();
+    	int linha = this.pPosicao.getLinha();
+
+    	int larguraEmCelulas = 0;
+    	int alturaEmCelulas = 0;
+    	int margem = 4;
+
+    	int largura = larguraEmCelulas * cellSize - 2 * margem;
+    	int altura = alturaEmCelulas * cellSize - 2 * margem;
+
+    	int x = coluna * cellSize + margem;
+    	int y = linha * cellSize + margem;
+
+    	return new Rectangle(x, y, largura, altura);
+    }
 }

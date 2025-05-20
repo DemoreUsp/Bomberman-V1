@@ -3,12 +3,16 @@ package Modelos;
 import Auxiliar.Consts;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 
 public class Bowser extends Personagem {
     private boolean bRight;
+    private Rectangle up;
+    private Rectangle left;
+    private Rectangle right;
     int iContador;
 
     public Bowser(String sNomeImagePNG) {
@@ -22,9 +26,9 @@ public class Bowser extends Personagem {
     try {
         iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
         Image img = iImage.getImage();
-        BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage(2*Consts.CELL_SIDE, 2*Consts.CELL_SIDE, 2*BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
-        g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+        g.drawImage(img, 0, 0, 2*Consts.CELL_SIDE, 2*Consts.CELL_SIDE, null);
         iImage = new ImageIcon(bi);
     } catch (IOException ex) {
         System.out.println(ex.getMessage());
@@ -36,15 +40,51 @@ public class Bowser extends Personagem {
             iContador = 0;
             if (bRight) {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 3);
-                System.out.println("Linha: " + this.getPosicao().getLinha() + "\nColuna: " + this.getPosicao().getColuna());
             } else {
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 3);
-                System.out.println("Linha: " + this.getPosicao().getLinha() + "\nColuna: " + this.getPosicao().getColuna());
             }
 
             bRight = !bRight;
         }
         super.autoDesenho();
         iContador++;
+    }
+    
+    @Override
+    public Rectangle getHitbox() {
+    	int cellSize = Consts.CELL_SIDE;
+    	int coluna = this.pPosicao.getColuna();
+    	int linha = this.pPosicao.getLinha();
+
+    	int larguraEmCelulas = 2;
+    	int alturaEmCelulas = 2;
+    	int margem = 4;
+
+    	int largura = larguraEmCelulas * cellSize - 2 * margem;
+    	int altura = alturaEmCelulas * cellSize - 2 * margem;
+
+    	int x = coluna * cellSize + margem;
+    	int y = linha * cellSize + margem;
+
+    	return new Rectangle(x, y, largura, altura);
+    } 
+    
+    @Override
+    public Rectangle getUpHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+    	int coluna = this.pPosicao.getColuna();
+    	int linha = this.pPosicao.getLinha()-1;
+
+    	int larguraEmCelulas = 2;
+    	int alturaEmCelulas = 1;
+    	int margem = 4;
+
+    	int largura = larguraEmCelulas * cellSize - 2 * margem;
+    	int altura = alturaEmCelulas * cellSize - 2 * margem;
+
+    	int x = coluna * cellSize + margem;
+    	int y = linha * cellSize + margem;
+
+    	return new Rectangle(x, y, largura, altura);
     }
 }

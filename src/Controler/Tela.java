@@ -11,6 +11,7 @@ import Modelos.Bowser;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
+import java.awt.Color;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
 import java.awt.FlowLayout;
@@ -35,6 +36,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
+import java.awt.Rectangle;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
     private ArrayList<Fase> fases;
@@ -144,22 +146,23 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
+        
         cj.processaTudo(faseAtual, faseAtual.getHeroi());
         if(Mario.getVidas() <= 0) {
             System.out.println("Game Over\n");
-            Mario.setPosicao(faseAtual.getPosicaoInicialHeroi().getLinha(), faseAtual.getPosicaoInicialHeroi().getColuna());
+            carregarFase(faseAtualIndex);
             Mario.setVidas(1);
             System.out.println("Vidas: " + Mario.getVidas());
         }
-        if (!this.faseAtual.getPersonagens().isEmpty()) {
-            this.cj.desenhaTudo(faseAtual, faseAtual.getHeroi());
-            this.cj.processaTudo(faseAtual, faseAtual.getHeroi());
-            if(this.faseAtual.getPersonagens().isEmpty()) {
-                carregarFase(0);
-                faseAtualIndex = 0;
-                atualizaCamera();
-            }
+        
+        if(faseAtual.getPosicaoFinal().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
+                faseAtual.getPosicaoFinal().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
+            proximaFase();
         }
+        
+        int cameraOffsetX = cameraColuna * Consts.CELL_SIDE;
+        int cameraOffsetY = cameraLinha * Consts.CELL_SIDE;
+        this.cj.desenhaTudo(faseAtual, faseAtual.getHeroi(), cameraOffsetX, cameraOffsetY, g2);
 
         g.dispose();
         g2.dispose();
@@ -176,11 +179,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_ALTURA - Consts.RES));
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_LARGURA - Consts.RES));
-        
-        if(faseAtual.getPosicaoFinal().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
-                faseAtual.getPosicaoFinal().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
-            proximaFase();
-        }
     }
     
     private void inicializarFases() {
@@ -221,7 +219,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         inimigo2.setVidas(5);
         inimigo2.setMortal(true);
         inimigo2.setbTransponivel(true);
-        inimigo2.setPosicao(9, 20);
+        inimigo2.setPosicao(8, 20);
         fase2.adicionarPersonagem(inimigo2);
         
         fases.add(fase1);
@@ -277,16 +275,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             Mario.moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             long comparador = System.currentTimeMillis();
-            if(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT) 
-                return;
-            ultimoMovimentoHorizontal = comparador;
-            Mario.moveLeft();
+            if(!(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT)) {
+                ultimoMovimentoHorizontal = comparador;
+                Mario.moveLeft();
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             long comparador = System.currentTimeMillis();
-            if(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT) 
-                return;
-            ultimoMovimentoHorizontal = comparador;
-            Mario.moveRight();
+            if(!(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT)) {
+                ultimoMovimentoHorizontal = comparador;
+                Mario.moveRight();
+            }
         }
         this.atualizaCamera();
         this.setTitle("-> Cell: " + (Mario.getPosicao().getColuna()) + ", "
