@@ -11,6 +11,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Rectangle;
 
 public class Heroi extends Personagem implements Serializable{
     public Heroi(String sNomeImagePNG) {
@@ -40,8 +41,27 @@ public class Heroi extends Personagem implements Serializable{
         return true;       
     }
     
+    @Override
+    public Rectangle getHitbox() {
+    	int cellSize = Consts.CELL_SIDE;
+    	int coluna = this.pPosicao.getColuna();
+    	int linha = this.pPosicao.getLinha();
+
+    	int larguraEmCelulas = 1;
+    	int alturaEmCelulas = 1;
+    	int margem = 4;
+
+    	int largura = larguraEmCelulas * cellSize - 2 * margem;
+    	int altura = alturaEmCelulas * cellSize - 2 * margem;
+
+    	int x = coluna * cellSize + margem;
+    	int y = linha * cellSize + margem;
+
+    	return new Rectangle(x, y, largura, altura);
+    }
+    
     public boolean moveUp() {
-        if(super.moveUp(3))
+        if(super.moveUp(4))
             return validaPosicao();
         return false;
     }
