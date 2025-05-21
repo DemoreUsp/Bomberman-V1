@@ -34,7 +34,7 @@ public class Casco extends Personagem implements Serializable {
     @Override
     public void autoDesenho() {
         moveCounter++;
-        if(moveCounter >= 20) { // Movimento mais lento
+        if(moveCounter >= 20) {
             moveCounter = 0;
             
             Posicao nextPos = new Posicao(

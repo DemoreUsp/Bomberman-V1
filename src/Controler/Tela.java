@@ -287,14 +287,14 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         // Plataforma elevada para Goomba (colunas 5-10, linha 8)
         for(int col = 5; col <= 10; col++) {
-            Bloco plataforma = new Bloco("terraMario.png");
+            Bloco plataforma = new Bloco("bloco.png");
             plataforma.setPosicao(8, col);
             fase1.adicionarMapStuff(plataforma);
         }
-        Bloco parede1 = new Bloco("terraMario.png");
+        Bloco parede1 = new Bloco("bloco.png");
         parede1.setPosicao(7, 5);
         fase1.adicionarMapStuff(parede1);
-        Bloco parede2 = new Bloco("terraMario.png");
+        Bloco parede2 = new Bloco("bloco.png");
         parede2.setPosicao(7, 10);
         fase1.adicionarMapStuff(parede2);
     
@@ -305,16 +305,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     
         // Plataforma elevada para Koopa (colunas 15-20, linha 8)
         for(int col = 15; col <= 20; col++) {
-            Bloco plataforma = new Bloco("terraMario.png");
+            Bloco plataforma = new Bloco("bloco.png");
             plataforma.setPosicao(8, col);
             fase1.adicionarMapStuff(plataforma);
         }
         
-        Bloco parede3 = new Bloco("terraMario.png");
+        Bloco parede3 = new Bloco("bloco.png");
         parede3.setPosicao(7, 15);
         fase1.adicionarMapStuff(parede3);
         
-        Bloco parede4 = new Bloco("terraMario.png");
+        Bloco parede4 = new Bloco("bloco.png");
         parede4.setPosicao(7, 20);
         fase1.adicionarMapStuff(parede4);
     
