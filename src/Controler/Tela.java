@@ -89,6 +89,14 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
     }
+    
+    public Fase getFaseAtual() {
+        return faseAtual;
+    }
+
+    public ControleDeJogo getCj() {
+        return cj;
+    }
 
     public int getCameraLinha() {
         return cameraLinha;
@@ -219,6 +227,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             getBufferStrategy().show();
         }
         
+        for(Personagem p : faseAtual.getPersonagens()) {
+            p.atualizarFisica();
+        }
+        
         Mario.atualizarFisica();
     }
 
@@ -272,6 +284,45 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         // Adicionar inimigos
+        
+        // Plataforma elevada para Goomba (colunas 5-10, linha 8)
+        for(int col = 5; col <= 10; col++) {
+            Bloco plataforma = new Bloco("bloco.png");
+            plataforma.setPosicao(8, col);
+            fase1.adicionarMapStuff(plataforma);
+        }
+        Bloco parede1 = new Bloco("bloco.png");
+        parede1.setPosicao(7, 5);
+        fase1.adicionarMapStuff(parede1);
+        Bloco parede2 = new Bloco("bloco.png");
+        parede2.setPosicao(7, 10);
+        fase1.adicionarMapStuff(parede2);
+    
+        // Goomba na plataforma
+        Goomba goomba1 = new Goomba("goomba.png");
+        goomba1.setPosicao(7, 7); // Acima da plataforma
+        fase1.adicionarPersonagem(goomba1);
+    
+        // Plataforma elevada para Koopa (colunas 15-20, linha 8)
+        for(int col = 15; col <= 20; col++) {
+            Bloco plataforma = new Bloco("bloco.png");
+            plataforma.setPosicao(8, col);
+            fase1.adicionarMapStuff(plataforma);
+        }
+        
+        Bloco parede3 = new Bloco("bloco.png");
+        parede3.setPosicao(7, 15);
+        fase1.adicionarMapStuff(parede3);
+        
+        Bloco parede4 = new Bloco("bloco.png");
+        parede4.setPosicao(7, 20);
+        fase1.adicionarMapStuff(parede4);
+    
+        // Koopa na plataforma
+        Koopa koopa1 = new Koopa("koopa.png");
+        koopa1.setPosicao(7, 18); // Acima da plataforma
+        fase1.adicionarPersonagem(koopa1);
+        
         CanoBillbala inimigo1 = new CanoBillbala("");
         inimigo1.setPosicao(9, 22);
         fase1.adicionarPersonagem(inimigo1);
