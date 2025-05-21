@@ -37,20 +37,12 @@ public class CanoBillbala extends Personagem implements Serializable{
     
     @Override
     public Rectangle getHitbox() {
-    	int cellSize = Consts.CELL_SIDE;
-    	int coluna = this.pPosicao.getColuna();
-    	int linha = this.pPosicao.getLinha();
-
-    	int larguraEmCelulas = 0;
-    	int alturaEmCelulas = 0;
-    	int margem = 4;
-
-    	int largura = larguraEmCelulas * cellSize - 2 * margem;
-    	int altura = alturaEmCelulas * cellSize - 2 * margem;
-
-    	int x = coluna * cellSize + margem;
-    	int y = linha * cellSize + margem;
-
-    	return new Rectangle(x, y, largura, altura);
+        int cellSize = Consts.CELL_SIDE;
+        return new Rectangle(
+            pPosicao.getColuna() * cellSize,
+            pPosicao.getLinha() * cellSize,
+            cellSize,
+            2 * cellSize
+        );
     }
 }

@@ -2,8 +2,11 @@ package Modelos;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Auxiliar.Posicao;
+import Controler.Tela;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,27 +16,67 @@ import javax.swing.JPanel;
 
 public class Goomba extends Personagem implements Serializable {
 
-    private boolean bRight;
-    int iContador;
+    private boolean movingRight;
+    private int moveCounter;
+    private Tela tela;
 
     public Goomba(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        bRight = true;
-        iContador = 0;
+        movingRight = false; // Começa movendo para a esquerda
+        moveCounter = 0;
+        tela = Desenho.acessoATelaDoJogo();
+        this.setMortal(true); // Correção aqui
+    }
+    
+    @Override
+    public Rectangle getHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+        int coluna = this.pPosicao.getColuna();
+        int linha = this.pPosicao.getLinha();
+        int margem = 4;
+        return new Rectangle(
+            coluna * cellSize + margem,
+            linha * cellSize + margem,
+            cellSize - 2 * margem,
+            cellSize - 2 * margem
+        );
+    }
+    
+    @Override
+    public Rectangle getUpHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+        return new Rectangle(
+            pPosicao.getColuna() * cellSize,
+            (pPosicao.getLinha() - 1) * cellSize, // Área acima do Goomba
+            cellSize,
+            cellSize
+        );
+    }
+
+    @Override
+    public boolean isbMortal() {
+        return true; // Mata o Mario ao toque frontal
     }
 
     public void autoDesenho() {
-        if (iContador == 5) {
-            iContador = 0;
-            if (bRight) {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
+        moveCounter++;
+        if (moveCounter >= 15) {
+            moveCounter = 0;
+            
+            // Verifica próxima posição
+            Posicao nextPos = new Posicao(this.getPosicao().getLinha(), 
+                this.getPosicao().getColuna() + (movingRight ? 1 : -1));
+            
+            // Verifica colisão com o mapa
+            boolean canMove = tela.getCj().ehPosicaoValida(tela.getFaseAtual(), nextPos);
+            
+            if (canMove) {
+                this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
             } else {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
+                movingRight = !movingRight; // Inverte direção
             }
-
-            bRight = !bRight;
         }
         super.autoDesenho();
-        iContador++;
     }
+    
 }

@@ -86,7 +86,15 @@ public abstract class Personagem implements Serializable {
     }
     
     public Rectangle getUpHitbox() {
-        return getHitbox();
+        // Adicione logs para verificar as coordenadas
+        Rectangle hitbox = new Rectangle(
+            pPosicao.getColuna() * Consts.CELL_SIDE + 4,
+            (pPosicao.getLinha() - 1) * Consts.CELL_SIDE + 4,
+            Consts.CELL_SIDE - 8,
+            Consts.CELL_SIDE - 8
+        );
+        System.out.println("[DEBUG] UpHitbox de " + this.getClass().getSimpleName() + ": " + hitbox);
+        return hitbox;
     }
     
     public void drawHitbox(int cameraOffsetX, int cameraOffsetY, Graphics g2) {
@@ -103,8 +111,11 @@ public abstract class Personagem implements Serializable {
     }
     
     public void atualizarFisica() {
-        int velocidadeY = gravidade;
-        this.setPosicao(this.pPosicao.getLinha() + velocidadeY, this.pPosicao.getColuna());
+        Posicao abaixo = new Posicao(pPosicao.getLinha() + 1, pPosicao.getColuna());
+        if (Desenho.acessoATelaDoJogo().ehPosicaoValida(abaixo)) {
+            this.setPosicao(abaixo.getLinha(), abaixo.getColuna());
+            System.out.println("[DEBUG] Personagem caindo: " + this.getClass().getSimpleName());
+        }
     }
 
     public boolean setPosicao(int linha, int coluna) {
