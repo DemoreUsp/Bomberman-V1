@@ -12,6 +12,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 public class Billbala extends Personagem implements Serializable{
+    private int vidas = 1;
             
     public Billbala(String sNomeImagePNG) {
         super(sNomeImagePNG);
@@ -57,5 +58,22 @@ public class Billbala extends Personagem implements Serializable{
     	return new Rectangle(x, y, largura, altura);
     }
     
+    @Override
+    public Rectangle getUpHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+        return new Rectangle(
+            pPosicao.getColuna() * cellSize,
+            (pPosicao.getLinha() - 1) * cellSize, // Hitbox acima do Billbala
+            cellSize,
+            cellSize
+        );
+    }
+    
+    public void receberDano() {
+        this.vidas--;
+        if (this.vidas <= 0) {
+            Desenho.acessoATelaDoJogo().removePersonagem(this);
+        }
+    }
     
 }

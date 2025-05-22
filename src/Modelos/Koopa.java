@@ -1,28 +1,96 @@
 
 package Modelos;
 
-public class Koopa extends Personagem{
-    private boolean bRight;
-    int iContador;
+import Auxiliar.Consts;
+import Auxiliar.Desenho;
+import Auxiliar.Posicao;
+import Controler.Tela;
+import java.awt.Rectangle;
+import java.io.Serializable;
+import java.util.Iterator;
+
+public class Koopa extends Personagem implements Serializable {
+    private boolean movingRight;
+    private int moveCounter;
+    private Tela tela;
+    private boolean transformado = false;
 
     public Koopa(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        bRight = true;
-        iContador = 0;
+        movingRight = false;
+        moveCounter = 0;
+        tela = Desenho.acessoATelaDoJogo();
+        this.setMortal(true);
+    }
+    
+    @Override
+    public Rectangle getHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+        int coluna = this.pPosicao.getColuna();
+        int linha = this.pPosicao.getLinha();
+        int margem = 4;
+        return new Rectangle(
+            coluna * cellSize + margem,
+            linha * cellSize + margem,
+            cellSize - 2 * margem,
+            cellSize - 2 * margem
+        );
     }
 
     public void autoDesenho() {
-        if (iContador == 5) {
-            iContador = 0;
-            if (bRight) {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
+        moveCounter++;
+        if (moveCounter >= 15) {
+            moveCounter = 0;
+            
+            Posicao nextPos = new Posicao(this.getPosicao().getLinha(), 
+                this.getPosicao().getColuna() + (movingRight ? 1 : -1));
+            
+            boolean canMove = tela.getCj().ehPosicaoValida(tela.getFaseAtual(), nextPos);
+            
+            if (canMove) {
+                this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
             } else {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
+                movingRight = !movingRight;
             }
-
-            bRight = !bRight;
         }
         super.autoDesenho();
-        iContador++;
+    }
+    
+    public void marcarComoTransformado() {
+        this.transformado = true;
+    }
+
+    public boolean foiTransformado() {
+        return transformado;
+    }
+    
+    @Override
+    public Rectangle getUpHitbox() {
+        int cellSize = Consts.CELL_SIDE;
+        return new Rectangle(
+            pPosicao.getColuna() * cellSize,
+            (pPosicao.getLinha() - 1) * cellSize, // Área acima do Koopa
+            cellSize,
+            cellSize
+        );
+    }
+    
+    public void transformarEmCasco(Iterator<Personagem> iterator) {
+        System.out.println("[DEBUG] Transformando Koopa em Casco");
+
+        // Cria novo Casco
+        Casco casco = new Casco("casco.png");
+        casco.setPosicao(this.getPosicao().getLinha(), this.getPosicao().getColuna());
+        casco.setbTransponivel(false);
+        casco.setMortal(true);
+
+        // Adiciona à lista de personagens
+        Tela tela = Desenho.acessoATelaDoJogo();
+        tela.getFaseAtual().getPersonagens().add(casco);
+
+        // Remove o Koopa usando o iterator
+        iterator.remove();
+
+        System.out.println("[DEBUG] Casco adicionado na posição: " + casco.getPosicao());
     }
 }

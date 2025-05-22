@@ -2,6 +2,7 @@ package Modelos;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Auxiliar.Posicao;
 import Controler.ControleDeJogo;
 import Controler.Tela;
 import java.awt.Graphics;
@@ -61,9 +62,14 @@ public class Heroi extends Personagem implements Serializable{
     }
     
     public boolean moveUp() {
-        if(super.moveUp(4))
-            return validaPosicao();
-        return false;
+        for (int i = 0; i < 4; i++) { // Força do pulo = 4 células
+            Posicao nextPos = new Posicao(this.pPosicao.getLinha() - 1, this.pPosicao.getColuna());
+            if (!Desenho.acessoATelaDoJogo().ehPosicaoValida(nextPos)) {
+                return false; // Bloqueia o pulo se houver colisão
+            }
+            this.pPosicao.setPosicao(nextPos.getLinha(), nextPos.getColuna());
+        }
+        return true;
     }
 
     public boolean moveDown() {
