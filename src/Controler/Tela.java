@@ -228,6 +228,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         for(Personagem p : faseAtual.getPersonagens()) {
+            if(p instanceof Bowser) continue;
             p.atualizarFisica();
         }
         
