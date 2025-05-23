@@ -1,15 +1,20 @@
 package Modelos;
 
 import Auxiliar.Consts;
+import Auxiliar.Posicao;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import java.lang.Math;
 
 public class Bowser extends Personagem {
     private boolean bRight;
+    private int moveCounter = 0;
+    private int desloc = 0;
+    private int direcao = -1;
     private Rectangle up;
     private Rectangle left;
     private Rectangle right;
@@ -34,21 +39,44 @@ public class Bowser extends Personagem {
         System.out.println(ex.getMessage());
         }
     }
-
+    
+    @Override
     public void autoDesenho() {
-        if (iContador == 5) {
-            iContador = 0;
-            if (bRight) {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 3);
-            } else {
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 3);
+        if(this.getVidas() <= 2) { 
+            this.autoDesenhoRage(); 
+            return;
+        }
+        moveCounter++;
+        if (moveCounter >= 3) {
+            Posicao nextPos = new Posicao(this.getPosicao().getLinha(), 
+                this.getPosicao().getColuna() + this.direcao);
+            this.desloc += direcao;
+            this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
+            moveCounter = 0;
+            if(Math.abs(this.desloc) >= 4) { 
+                this.direcao *= -1; 
+                this.desloc = 0;
             }
-
-            bRight = !bRight;
         }
         super.autoDesenho();
-        iContador++;
     }
+    
+    public void autoDesenhoRage() {
+        moveCounter++;
+        if (moveCounter >= 1) {
+            Posicao nextPos = new Posicao(this.getPosicao().getLinha(), 
+                this.getPosicao().getColuna() + this.direcao);
+            this.desloc += direcao;
+            this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
+            moveCounter = 0;
+            if(Math.abs(this.desloc) >= 5) { 
+                this.direcao *= -1; 
+                this.desloc = 0;
+            }
+        }
+        super.autoDesenho();
+    }
+    
     
     @Override
     public Rectangle getHitbox() {

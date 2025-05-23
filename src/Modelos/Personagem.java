@@ -78,7 +78,7 @@ public abstract class Personagem implements Serializable {
     }
 
     public void autoDesenho(){
-        Desenho.desenhar(this.iImage, this.pPosicao.getColuna(), this.pPosicao.getLinha());        
+        Desenho.desenhar(this.iImage, this.pPosicao.getColuna(), this.pPosicao.getLinha());              
     }
     
     public Rectangle getHitbox() {
@@ -93,7 +93,7 @@ public abstract class Personagem implements Serializable {
             Consts.CELL_SIDE - 8,
             Consts.CELL_SIDE - 8
         );
-        System.out.println("[DEBUG] UpHitbox de " + this.getClass().getSimpleName() + ": " + hitbox);
+        //System.out.println("[DEBUG] UpHitbox de " + this.getClass().getSimpleName() + ": " + hitbox);
         return hitbox;
     }
     
@@ -114,7 +114,7 @@ public abstract class Personagem implements Serializable {
         Posicao abaixo = new Posicao(pPosicao.getLinha() + 1, pPosicao.getColuna());
         if (Desenho.acessoATelaDoJogo().ehPosicaoValida(abaixo)) {
             this.setPosicao(abaixo.getLinha(), abaixo.getColuna());
-            System.out.println("[DEBUG] Personagem caindo: " + this.getClass().getSimpleName());
+            //System.out.println("[DEBUG] Personagem caindo: " + this.getClass().getSimpleName());
         }
     }
 
