@@ -11,19 +11,13 @@ import javax.swing.ImageIcon;
 import java.lang.Math;
 
 public class Bowser extends Personagem {
-    private boolean bRight;
-    private int moveCounter = 0;
+    private int moveCounter;
     private int desloc = 0;
     private int direcao = -1;
-    private Rectangle up;
-    private Rectangle left;
-    private Rectangle right;
-    int iContador;
 
     public Bowser(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        bRight = true;
-        iContador = 0;
+        moveCounter = 0;
     }
     
     @Override
