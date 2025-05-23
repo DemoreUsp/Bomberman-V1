@@ -12,6 +12,7 @@ import Modelos.Bowser;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
+import Modelos.Cano;
 import java.awt.Color;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
@@ -267,7 +268,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     
     private void inicializarFases() {
         Posicao inicioFase1 = new Posicao(9, 3);
-        Posicao finalFase1 = new Posicao(9, 55);
+        Posicao finalFase1 = new Posicao(8, 55);
         Fase fase1 = new Fase(1, inicioFase1, finalFase1);
         
         for(int col = 0; col < 65; col++) {
@@ -283,6 +284,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 fase1.adicionarMapStuff(blocolin);
             }
         }
+        
+        Cano cano1 = new Cano("cano.png");
+        cano1.setPosicao(9, 55);
+        fase1.adicionarMapStuff(cano1);
         
         // Adicionar inimigos
         
