@@ -50,6 +50,10 @@ public class Bowser extends Personagem {
             if(Math.abs(this.desloc) >= 4) { 
                 this.direcao *= -1; 
                 this.desloc = 0;
+                if(this.direcao > 0)
+                    this.carregarImagem("bowserR.png");
+                else 
+                    this.carregarImagem("bowserL.png");
             }
         }
         super.autoDesenho();
@@ -66,6 +70,10 @@ public class Bowser extends Personagem {
             if(Math.abs(this.desloc) >= 5) { 
                 this.direcao *= -1; 
                 this.desloc = 0;
+                if(this.direcao > 0)
+                    this.carregarImagem("bowserR.png");
+                else 
+                    this.carregarImagem("bowserL.png");
             }
         }
         super.autoDesenho();
