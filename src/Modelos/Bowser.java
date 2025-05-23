@@ -67,7 +67,7 @@ public class Bowser extends Personagem {
             this.desloc += direcao;
             this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
             moveCounter = 0;
-            if(Math.abs(this.desloc) >= 5) { 
+            if(Math.abs(this.desloc) >= 6) { 
                 this.direcao *= -1; 
                 this.desloc = 0;
                 if(this.direcao > 0)
