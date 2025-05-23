@@ -11,19 +11,13 @@ import javax.swing.ImageIcon;
 import java.lang.Math;
 
 public class Bowser extends Personagem {
-    private boolean bRight;
-    private int moveCounter = 0;
+    private int moveCounter;
     private int desloc = 0;
     private int direcao = -1;
-    private Rectangle up;
-    private Rectangle left;
-    private Rectangle right;
-    int iContador;
 
     public Bowser(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        bRight = true;
-        iContador = 0;
+        moveCounter = 0;
     }
     
     @Override
@@ -56,6 +50,10 @@ public class Bowser extends Personagem {
             if(Math.abs(this.desloc) >= 4) { 
                 this.direcao *= -1; 
                 this.desloc = 0;
+                if(this.direcao > 0)
+                    this.carregarImagem("bowserR.png");
+                else 
+                    this.carregarImagem("bowserL.png");
             }
         }
         super.autoDesenho();
@@ -69,9 +67,13 @@ public class Bowser extends Personagem {
             this.desloc += direcao;
             this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
             moveCounter = 0;
-            if(Math.abs(this.desloc) >= 5) { 
+            if(Math.abs(this.desloc) >= 6) { 
                 this.direcao *= -1; 
                 this.desloc = 0;
+                if(this.direcao > 0)
+                    this.carregarImagem("bowserR.png");
+                else 
+                    this.carregarImagem("bowserL.png");
             }
         }
         super.autoDesenho();

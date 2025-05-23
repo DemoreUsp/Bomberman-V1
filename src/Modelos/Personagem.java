@@ -51,6 +51,10 @@ public abstract class Personagem implements Serializable {
     }
 }
     
+    public void setImagem(String sNomeImagePNG) {
+        carregarImagem(sNomeImagePNG);
+    }
+    
     public Posicao getPosicao() {
         /*TODO: Retirar este método para que objetos externos nao possam operar
          diretamente sobre a posição do Personagem*/

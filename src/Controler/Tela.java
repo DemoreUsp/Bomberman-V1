@@ -67,7 +67,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
 
     // Cria o herói primeiro
-    Mario = new Heroi("mario.png");
+    Mario = new Heroi("marioR.png");
     Mario.setMortal(true);
     
     // Inicializa o sistema de fases
@@ -349,7 +349,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             }
         }
         
-        Bowser inimigo2 = new Bowser("bowser.png");
+        Bowser inimigo2 = new Bowser("bowserL.png");
         inimigo2.setVidas(5);
         inimigo2.setMortal(true);
         inimigo2.setbTransponivel(true);

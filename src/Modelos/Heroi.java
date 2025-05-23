@@ -79,12 +79,14 @@ public class Heroi extends Personagem implements Serializable{
     }
 
     public boolean moveRight() {
+        this.setImagem("marioR.png");
         if(super.moveRight())
             return validaPosicao();
         return false;
     }
 
     public boolean moveLeft() {
+        this.setImagem("marioL.png");
         if(super.moveLeft())
             return validaPosicao();
         return false;
