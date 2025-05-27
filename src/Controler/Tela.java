@@ -14,6 +14,7 @@ import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
 import Controler.ZipStore;
+import Modelos.Cano;
 import java.awt.Color;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
