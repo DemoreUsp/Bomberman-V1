@@ -1,5 +1,6 @@
 package Controler;
 
+import Modelos.Entities.Villains.Goomba;
 import java.io.*;
 import java.util.zip.*;
 
@@ -57,5 +58,14 @@ public class ZipStore {
             }
         }
         throw new FileNotFoundException("Entry " + entryName + " not found in ZIP.");
+    }
+    
+    public static void testZip() {
+        Goomba g = new Goomba("goomba.png");
+        try {
+            serializeToZip("saves/GoombaDrop.zip", "GoombaDrop.zip", g);
+        } catch(Exception e) {
+            System.out.println(e);
+        }
     }
 }
