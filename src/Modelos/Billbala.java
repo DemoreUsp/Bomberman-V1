@@ -2,16 +2,14 @@ package Modelos;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Controler.Tela;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.Serializable;
 import javax.swing.ImageIcon;
 
-public class Billbala extends Personagem implements Serializable{
+public class Billbala extends Personagem {
     private int vidas = 1;
             
     public Billbala(String sNomeImagePNG) {

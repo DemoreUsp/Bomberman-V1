@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
-public class ControleDeJogo {
+public class ControleDeJogo implements Serializable{
     
     public void desenhaTudo(Fase umaFase, Heroi hero, int cameraX, int cameraY, Graphics g) {
         hero.autoDesenho();

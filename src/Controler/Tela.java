@@ -12,6 +12,7 @@ import Modelos.Bowser;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
+import Controler.ZipStore;
 import java.awt.Color;
 //import Modelos.BichinhoVaiVemVertical;
 //import Modelos.ZigueZague;
@@ -29,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -40,6 +42,7 @@ import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
 import java.awt.Rectangle;
 import java. util.Random;
+import java.io.Serializable;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
     private ArrayList<Fase> fases;
@@ -72,19 +75,22 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     // Inicializa o sistema de fases
     this.fases = new ArrayList<>();
     this.faseAtualIndex = 0;
+    try {
+        Fase loadedFase = (Fase) ZipStore.deserializeFromZip("saves/save.zip", "save.zip");
+        System.out.println(loadedFase.getHeroi().getVidas());
+        System.out.println("Fase loaded successfully!");
+        fases.add(loadedFase);
+    } catch (IOException | ClassNotFoundException e) {
+        System.err.println("Failed to load Fase: " + e.getMessage());
+    }
     inicializarFases();
-    carregarFase(0);
+    carregarFase(faseAtualIndex);
  
     this.atualizaCamera();
     inicializarNuvens();
 
         Desenho.setCenario(this);
         initComponents();
-        this.addMouseListener(this);
-        /*mouse*/
-
-        this.addKeyListener(this);
-        /*teclado*/
  /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
@@ -327,6 +333,11 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         CanoBillbala inimigo1 = new CanoBillbala("");
         inimigo1.setPosicao(9, 22);
         fase1.adicionarPersonagem(inimigo1);
+
+        Mario.setPosicao(
+        fase1.getPosicaoInicialHeroi().getLinha(),
+        fase1.getPosicaoInicialHeroi().getColuna()
+        );
         
         //Teste, mudança de fase funcionando legal, tudo certinho
         Fase fase2 = new Fase(2, new Posicao(5, 5), new Posicao(10,10));
@@ -364,8 +375,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     
     // Posiciona Mario na posição inicial da fase
     Mario.setPosicao(
-        faseAtual.getPosicaoInicialHeroi().getLinha(),
-        faseAtual.getPosicaoInicialHeroi().getColuna()
+        faseAtual.getPosicaoHeroi().getLinha(),
+        faseAtual.getPosicaoHeroi().getColuna()
     );
     
     Mario.setVidas(2);
@@ -482,5 +493,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            if(e.getID() == KeyEvent.KEY_RELEASED) {
+                try {
+                    System.out.println("Salvando...");
+                    ZipStore.serializeToZip("saves/save.zip", "save.zip", this.faseAtual);
+                    System.out.println("Jogo salvo como sucesso!");
+                } catch(IOException ex) {
+                    System.out.println(ex);
+                }
+            }
+        }
     }
 }

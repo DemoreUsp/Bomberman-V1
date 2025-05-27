@@ -1,9 +1,11 @@
 package Modelos;
 
 import Auxiliar.Posicao;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Fase {
+public class Fase implements Serializable{
     private int numero;
     private ArrayList<Personagem> mapStuff;
     private ArrayList<Personagem> personagens;
@@ -45,6 +47,10 @@ public class Fase {
 
     public Posicao getPosicaoInicialHeroi() {
         return posicaoInicialHeroi;
+    }
+
+    public Posicao getPosicaoHeroi() {
+        return Heroi.getPosicao();
     }
 
     public int getNumero() {
