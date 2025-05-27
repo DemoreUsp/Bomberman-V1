@@ -1,9 +1,10 @@
-package Modelos;
+package Modelos.Entities.Villains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
 import Controler.Tela;
+import Modelos.Personagem;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -18,13 +19,11 @@ public class Goomba extends Personagem implements Serializable {
 
     private boolean movingRight;
     private int moveCounter;
-    private Tela tela;
 
     public Goomba(String sNomeImagePNG) {
         super(sNomeImagePNG);
         movingRight = false; // Começa movendo para a esquerda
         moveCounter = 0;
-        tela = Desenho.acessoATelaDoJogo();
         this.setMortal(true); // Correção aqui
     }
     
@@ -68,7 +67,7 @@ public class Goomba extends Personagem implements Serializable {
                 this.getPosicao().getColuna() + (movingRight ? 1 : -1));
             
             // Verifica colisão com o mapa
-            boolean canMove = tela.getCj().ehPosicaoValida(tela.getFaseAtual(), nextPos);
+            boolean canMove = Desenho.acessoATelaDoJogo().getCj().ehPosicaoValida(Desenho.acessoATelaDoJogo().getFaseAtual(), nextPos);
             
             if (canMove) {
                 this.setPosicao(nextPos.getLinha(), nextPos.getColuna());

@@ -1,4 +1,6 @@
-package Modelos;
+package Modelos.MapStuff;
+
+import Modelos.Personagem;
 
 public class Bloco extends Personagem {
     public Bloco(String sNomeImagePNG) {

@@ -1,21 +1,22 @@
 package Controler;
 
 import Modelos.Personagem;
-import Modelos.Heroi;
-import Modelos.Fase;
+import Modelos.Entities.Heroes.Heroi;
+import Controler.Fases.Fase;
 import Auxiliar.Posicao;
-import Modelos.Billbala;
-import Modelos.CanoBillbala;
-import Modelos.Bowser;
-import Modelos.Casco;
-import Modelos.Goomba;
-import Modelos.Koopa;
+import Modelos.Entities.Villains.AuxiliarVillains.Billbala;
+import Modelos.Entities.Villains.CanoBillbala;
+import Modelos.Entities.Villains.Bowser;
+import Modelos.Entities.Villains.AuxiliarVillains.Casco;
+import Modelos.Entities.Villains.Goomba;
+import Modelos.Entities.Villains.Koopa;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.List;
+import java.io.Serializable;
 
-public class ControleDeJogo {
+public class ControleDeJogo implements Serializable{
     
     public void desenhaTudo(Fase umaFase, Heroi hero, int cameraX, int cameraY, Graphics g) {
         hero.autoDesenho();

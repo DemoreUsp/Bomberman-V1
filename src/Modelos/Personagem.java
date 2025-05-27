@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.io.*;
+import java.util.zip.*;
 
 public abstract class Personagem implements Serializable {
 

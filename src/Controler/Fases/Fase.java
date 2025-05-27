@@ -1,9 +1,13 @@
-package Modelos;
+package Controler.Fases;
 
+import Modelos.Entities.Heroes.Heroi;
 import Auxiliar.Posicao;
+import Modelos.Personagem;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Fase {
+public class Fase implements Serializable{
     private int numero;
     private ArrayList<Personagem> mapStuff;
     private ArrayList<Personagem> personagens;
@@ -32,8 +36,11 @@ public class Fase {
     }
     
     public Heroi getHeroi() {
+        if(this.Heroi == null) {
+            return null;
+        }
         return this.Heroi;
-    }
+     }
 
     public ArrayList<Personagem> getPersonagens() {
         return this.personagens;
@@ -45,6 +52,10 @@ public class Fase {
 
     public Posicao getPosicaoInicialHeroi() {
         return posicaoInicialHeroi;
+    }
+
+    public Posicao getPosicaoHeroi() {
+        return Heroi.getPosicao();
     }
 
     public int getNumero() {

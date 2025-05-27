@@ -1,10 +1,12 @@
 
-package Modelos;
+package Modelos.Entities.Villains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
 import Controler.Tela;
+import Modelos.Entities.Villains.AuxiliarVillains.Casco;
+import Modelos.Personagem;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.Iterator;
@@ -12,14 +14,12 @@ import java.util.Iterator;
 public class Koopa extends Personagem implements Serializable {
     private boolean movingRight;
     private int moveCounter;
-    private Tela tela;
     private boolean transformado = false;
 
     public Koopa(String sNomeImagePNG) {
         super(sNomeImagePNG);
         movingRight = false;
         moveCounter = 0;
-        tela = Desenho.acessoATelaDoJogo();
         this.setMortal(true);
     }
     
@@ -45,7 +45,7 @@ public class Koopa extends Personagem implements Serializable {
             Posicao nextPos = new Posicao(this.getPosicao().getLinha(), 
                 this.getPosicao().getColuna() + (movingRight ? 1 : -1));
             
-            boolean canMove = tela.getCj().ehPosicaoValida(tela.getFaseAtual(), nextPos);
+            boolean canMove = Desenho.acessoATelaDoJogo().getCj().ehPosicaoValida(Desenho.acessoATelaDoJogo().getFaseAtual(), nextPos);
             
             if (canMove) {
                 this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
@@ -85,8 +85,7 @@ public class Koopa extends Personagem implements Serializable {
         casco.setMortal(true);
 
         // Adiciona à lista de personagens
-        Tela tela = Desenho.acessoATelaDoJogo();
-        tela.getFaseAtual().getPersonagens().add(casco);
+        Desenho.acessoATelaDoJogo().getFaseAtual().getPersonagens().add(casco);
 
         // Remove o Koopa usando o iterator
         iterator.remove();

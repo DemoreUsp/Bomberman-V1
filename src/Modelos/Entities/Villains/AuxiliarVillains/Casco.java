@@ -1,24 +1,20 @@
-package Modelos;
+package Modelos.Entities.Villains.AuxiliarVillains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
-import Controler.Tela;
-import java.awt.Graphics;
+import Modelos.Personagem;
 import java.awt.Rectangle;
-import java.io.Serializable;
 
-public class Casco extends Personagem implements Serializable {
+public class Casco extends Personagem {
     private boolean movingRight = true;
     private int moveCounter = 0;
-    private Tela tela;
     private int moveDelay = 0; // Contador de delay
     private static final int MOVE_DELAY_MAX = 10; // Ajuste este valor para controlar a velocidade
 
     public Casco(String sNomeImagePNG) {
         super(sNomeImagePNG);
         movingRight = true;
-        tela = Desenho.acessoATelaDoJogo();
         this.setbTransponivel(false);
         this.setMortal(true);
     }
