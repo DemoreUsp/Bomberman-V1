@@ -1,10 +1,12 @@
 
-package Modelos;
+package Modelos.Entities.Villains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
 import Controler.Tela;
+import Modelos.Entities.Villains.AuxiliarVillains.Casco;
+import Modelos.Personagem;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.Iterator;

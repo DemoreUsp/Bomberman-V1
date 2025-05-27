@@ -1,8 +1,9 @@
-package Modelos;
+package Modelos.Entities.Villains.AuxiliarVillains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
+import Modelos.Personagem;
 import java.awt.Rectangle;
 
 public class Casco extends Personagem {

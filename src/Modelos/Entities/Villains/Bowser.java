@@ -1,7 +1,8 @@
-package Modelos;
+package Modelos.Entities.Villains;
 
 import Auxiliar.Consts;
 import Auxiliar.Posicao;
+import Modelos.Personagem;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
