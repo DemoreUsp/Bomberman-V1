@@ -45,8 +45,14 @@ import javax.swing.JButton;
 import java.awt.Rectangle;
 import java. util.Random;
 import java.io.Serializable;
+import java.awt.dnd.*;
+import java.util.List;
+import java.awt.dnd.*;
+import java.awt.datatransfer.*;
+import java.io.*;
+import java.util.List;
 
-public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
+public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener, DropTargetListener {
     //private ArrayList<Fase> fases;
     private FasesHandler fases = new FasesHandler();
     private Fase faseAtual;
@@ -65,6 +71,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     initComponents();
     this.addMouseListener(this);
     this.addKeyListener(this);
+    new DropTarget(this, this);
 
     this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
             Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
@@ -309,6 +316,22 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 + (faseAtual.getHeroi().getPosicao().getLinha()));
         repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
+    
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            if(e.getID() == KeyEvent.KEY_RELEASED) {
+                try {
+                    System.out.println("Salvando...");
+                    ZipStore.serializeToZip("saves/save.zip", "save.zip", this.faseAtual);
+                    System.out.println("Jogo salvo como sucesso!");
+                } catch(IOException ex) {
+                    System.out.println(ex);
+                }
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_F1) {
+            ZipStore.testZip();
+        }
+    }
 
     public void mousePressed(MouseEvent e) {
         /* Clique do mouse desligado*/
@@ -322,7 +345,47 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         repaint();
     }
+    
+    @Override
+    public void drop(DropTargetDropEvent dtde) {
+        try {
+            dtde.acceptDrop(DnDConstants.ACTION_COPY);
+            Transferable t = dtde.getTransferable();
 
+            if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                List<File> arquivos = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+
+                for (File arquivo : arquivos) {
+                    if (arquivo.getName().endsWith(".zip")) {
+                        // Supondo que o zip tenha apenas 1 entry: "inimigo.zip"
+                        Object obj = ZipStore.deserializeFromZip(arquivo.getAbsolutePath(), "GoombaDrop.zip");
+
+                        if (obj instanceof Goomba) {
+                            Goomba inimigo = (Goomba) obj;
+
+                            // Pega a posição do mouse no drop
+                            int x = dtde.getLocation().x;
+                            int y = dtde.getLocation().y;
+
+                            // Converte para coordenadas de grade (ex: 32px por tile)
+                            int linha = y / 32;
+                            int coluna = x / 32;
+
+                            inimigo.setPosicao(linha, coluna);
+
+                            // Adiciona à fase atual
+                            faseAtual.adicionarPersonagem(inimigo);
+
+                            System.out.println("Inimigo inserido em: " + linha + ", " + coluna);
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -369,18 +432,17 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyTyped(KeyEvent e) {
     }
-
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            if(e.getID() == KeyEvent.KEY_RELEASED) {
-                try {
-                    System.out.println("Salvando...");
-                    ZipStore.serializeToZip("saves/save.zip", "save.zip", this.faseAtual);
-                    System.out.println("Jogo salvo como sucesso!");
-                } catch(IOException ex) {
-                    System.out.println(ex);
-                }
-            }
-        }
+ 
+    public void dragEnter(DropTargetDragEvent dtde) {
     }
+    
+    public void dragOver(DropTargetDragEvent dtde) {
+    }
+    
+    public void dropActionChanged(DropTargetDragEvent dtde) {
+    }
+    
+    public void dragExit(DropTargetEvent dte) {
+    }
+    
 }
