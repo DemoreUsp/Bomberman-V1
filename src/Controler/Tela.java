@@ -52,6 +52,7 @@ import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.io.*;
 import java.util.List;
+import java.awt.Font;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener, DropTargetListener {
     //private ArrayList<Fase> fases;
@@ -220,6 +221,23 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         desenharNuvens(g2);
+        String textoCeu = "FASE " + (fases.getFaseAtualIndex()+1);
+        int xi = 270;
+        int yi = 50;
+        
+        // Fonte
+        g2.setFont(new Font("SansSerif", Font.BOLD, 50));
+        
+        // Desenha contorno preto
+        g2.setColor(Color.BLACK);
+        g2.drawString(textoCeu, xi - 2, yi - 2);
+        g2.drawString(textoCeu, xi - 2, yi + 2);
+        g2.drawString(textoCeu, xi + 2, yi - 2);
+        g2.drawString(textoCeu, xi + 2, yi + 2);
+        
+        g2.setColor(Color.WHITE);
+        g2.drawString(textoCeu, xi, yi);
+  
         cj.processaTudo(fases.getFaseAtual(), fases.getFaseAtual().getHeroi());
         if(faseAtual.getHeroi().getVidas() <= 0) {
             System.out.println("Game Over\n");
