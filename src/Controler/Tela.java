@@ -4,20 +4,14 @@ import Modelos.Personagem;
 import Modelos.MapStuff.Nuvem;
 import Controler.Fases.FasesHandler;
 import Controler.Fases.Fase;
-import Modelos.MapStuff.Bloco;
-import Modelos.Entities.Villains.CanoBillbala;
 import Modelos.Entities.Heroes.Heroi;
-import Modelos.Entities.Villains.Koopa;
 import Modelos.Entities.Villains.Goomba;
 import Modelos.Entities.Villains.Bowser;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Auxiliar.Posicao;
-import Controler.ZipStore;
-import Modelos.Cano;
 import Modelos.Entities.Villains.AuxiliarVillains.Billbala;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -26,37 +20,21 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import javax.swing.JButton;
-import java.awt.Rectangle;
-import java. util.Random;
-import java.io.Serializable;
-import java.awt.dnd.*;
-import java.util.List;
+import java.util.Random;
 import java.awt.dnd.*;
 import java.awt.datatransfer.*;
-import java.io.*;
-import java.util.List;
 import java.awt.Font;
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener, DropTargetListener {
-    //private ArrayList<Fase> fases;
     private FasesHandler fases = new FasesHandler();
-    private Fase faseAtual; 
+    private Fase faseAtual;
     private long TEMPO_TIMEOUT = 150;
     private long ultimoMovimentoHorizontal = 0;
     private ControleDeJogo cj = new ControleDeJogo();
@@ -66,46 +44,45 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private List<Nuvem> nuvens;
     private static final int NUM_NUVENS = 200; // Quantidade de nuvens
     private static final Random random = new Random();
-    
-    public Tela(boolean carregarSave) {
-    Desenho.setCenario(this);
-    initComponents();
-    this.addMouseListener(this);
-    this.addKeyListener(this);
-    new DropTarget(this, this);
 
-    this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
-            Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
-    
-    Heroi Mario = new Heroi("marioR.png");
-    
-    // Inicializa o sistema de fases
-    File arquivoZip = new File("saves/save.zip");
-    if(carregarSave && arquivoZip.exists()) {
-        try {
-            Fase loadedFase = (Fase) ZipStore.deserializeFromZip("saves/save.zip", "save.zip");
-            System.out.println(loadedFase.getHeroi().getVidas());
-            fases.carregarFaseLoaded(loadedFase);
-            Mario = loadedFase.getHeroi();
+    public Tela(boolean carregarSave) {
+        Desenho.setCenario(this);
+        initComponents();
+        this.addMouseListener(this);
+        this.addKeyListener(this);
+        new DropTarget(this, this);
+
+        this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
+                Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
+
+        Heroi Mario = new Heroi("marioR.png");
+
+        // Inicializa o sistema de fases
+        File arquivoZip = new File("saves/save.zip");
+        if (carregarSave && arquivoZip.exists()) {
+            try {
+                Fase loadedFase = (Fase) ZipStore.deserializeFromZip("saves/save.zip", "save.zip");
+                System.out.println(loadedFase.getHeroi().getVidas());
+                fases.carregarFaseLoaded(loadedFase);
+                Mario = loadedFase.getHeroi();
+                faseAtual = fases.getFaseAtual();
+                System.out.println("Fase loaded successfully!");
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("Failed to load Fase: " + e.getMessage());
+            }
+        } else {
+            fases.inicializarFaseIndex(0, Mario);
             faseAtual = fases.getFaseAtual();
-            System.out.println("Fase loaded successfully!");
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Failed to load Fase: " + e.getMessage());
         }
-    }
-    else {
-        fases.inicializarFaseIndex(4, Mario);
-        faseAtual = fases.getFaseAtual();
-    }
-    this.atualizaCamera();
-    inicializarNuvens();
-    Desenho.setCenario(this);
-    initComponents();
- /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
-    this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
+        this.atualizaCamera();
+        inicializarNuvens();
+        Desenho.setCenario(this);
+        initComponents();
+        /* Cria a janela do tamanho do tabuleiro + insets (bordas) da janela */
+        this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
     }
-    
+
     public Fase getFaseAtual() {
         return faseAtual;
     }
@@ -133,14 +110,14 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public void removePersonagem(Personagem umPersonagem) {
         faseAtual.getPersonagens().remove(umPersonagem);
     }
-    
+
     public boolean estaNoChao() {
         int lin = faseAtual.getHeroi().getPosicao().getLinha();
         int col = faseAtual.getHeroi().getPosicao().getColuna();
         Personagem b;
-        for(int i = 0; i < faseAtual.getMapStuff().size(); i++) {
+        for (int i = 0; i < faseAtual.getMapStuff().size(); i++) {
             b = faseAtual.getMapStuff().get(i);
-            if(b.getPosicao().getLinha() == lin + 1 && b
+            if (b.getPosicao().getLinha() == lin + 1 && b
                     .getPosicao().getColuna() == col) {
                 return true;
             }
@@ -151,40 +128,35 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public Graphics getGraphicsBuffer() {
         return g2;
     }
-    
+
     public void inicializarNuvens() {
         nuvens = new ArrayList<>();
         int tentativas = 0;
         int maxTentativas = 200; // Limite de tentativas para evitar loop infinito
         int distanciaMinima = Consts.CELL_SIDE * 2; // Distância mínima entre nuvens
-    
+
         while (nuvens.size() < NUM_NUVENS && tentativas < maxTentativas) {
             // Gera posições aleatórias dentro dos limites do mundo
             int x = random.nextInt(Consts.MUNDO_LARGURA * Consts.CELL_SIDE);
             int y = random.nextInt(Consts.MUNDO_ALTURA * Consts.CELL_SIDE / 3); // Mantém nuvens no terço superior
-        
+
             boolean posicaoValida = true;
-        
+
             // Verifica se a nova posição está longe o suficiente das nuvens existentes
             for (Nuvem nuvemExistente : nuvens) {
                 double distancia = calcularDistancia(x, y, nuvemExistente.getX(), nuvemExistente.getY());
-            
+
                 if (distancia < distanciaMinima) {
                     posicaoValida = false;
                     break;
                 }
             }
-        
+
             if (posicaoValida) {
                 nuvens.add(new Nuvem(x, y));
             }
-        
+
             tentativas++;
-        }
-    
-        // Se não conseguimos colocar todas as nuvens, ajustamos a quantidade
-        if (nuvens.size() < NUM_NUVENS) {
-            System.out.println("Aviso: Foram geradas apenas " + nuvens.size() + " nuvens de " + NUM_NUVENS + " desejadas");
         }
     }
 
@@ -195,7 +167,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        /*Criamos um contexto gráfico*/
+        /* Criamos um contexto gráfico */
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
         /**
          * ***********Desenha cenário de fundo*************
@@ -218,39 +190,39 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
-        
+
         desenharNuvens(g2);
-        String textoCeu = "FASE " + (fases.getFaseAtualIndex()+1);
+        String textoCeu = "FASE " + (fases.getFaseAtualIndex() + 1);
         int xi = 270;
         int yi = 50;
-        
+
         // Fonte
         g2.setFont(new Font("SansSerif", Font.BOLD, 50));
-        
+
         // Desenha contorno preto
         g2.setColor(Color.BLACK);
         g2.drawString(textoCeu, xi - 2, yi - 2);
         g2.drawString(textoCeu, xi - 2, yi + 2);
         g2.drawString(textoCeu, xi + 2, yi - 2);
         g2.drawString(textoCeu, xi + 2, yi + 2);
-        
+
         g2.setColor(Color.WHITE);
         g2.drawString(textoCeu, xi, yi);
-  
+
         cj.processaTudo(fases.getFaseAtual(), fases.getFaseAtual().getHeroi());
-        if(faseAtual.getHeroi().getVidas() <= 0) {
+        if (faseAtual.getHeroi().getVidas() <= 0) {
             System.out.println("Game Over\n");
             fases.inicializarFaseIndex(fases.getFaseAtualIndex(), fases.getFaseAtual().getHeroi());
             faseAtual.getHeroi().setVidas(1);
             System.out.println("Vidas: " + faseAtual.getHeroi().getVidas());
         }
-        
-        if(faseAtual.getPosicaoFinal().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
+
+        if (faseAtual.getPosicaoFinal().getLinha() == faseAtual.getHeroi().getPosicao().getLinha() &&
                 faseAtual.getPosicaoFinal().getColuna() == faseAtual.getHeroi().getPosicao().getColuna()) {
             fases.proximaFase();
             faseAtual = fases.getFaseAtual();
         }
-        
+
         int cameraOffsetX = cameraColuna * Consts.CELL_SIDE;
         int cameraOffsetY = cameraLinha * Consts.CELL_SIDE;
         this.cj.desenhaTudo(fases.getFaseAtual(), fases.getFaseAtual().getHeroi(), cameraOffsetX, cameraOffsetY, g2);
@@ -260,17 +232,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
-        
-        for(Personagem p : faseAtual.getPersonagens()) {
-            if(p instanceof Bowser || p instanceof Billbala) 
+
+        for (Personagem p : faseAtual.getPersonagens()) {
+            if (p instanceof Bowser || p instanceof Billbala)
                 continue;
             p.atualizarFisica();
-            //logica
-            //if(p instanceof Billbala && p.getPosicao() == (9, 22) && faseAtual.getNumero() == 2) {
-                //p.receberDano();
-            //}
         }
-        
+
         faseAtual.getHeroi().atualizarFisica();
     }
 
@@ -279,24 +247,25 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         int linha = faseAtual.getHeroi().getPosicao().getLinha();
         int coluna = faseAtual.getHeroi().getPosicao().getColuna();
 
-        //cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_ALTURA - Consts.RES));
+        // cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2,
+        // Consts.MUNDO_ALTURA - Consts.RES));
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_LARGURA - Consts.RES));
     }
-    
+
     private void desenharNuvens(Graphics g) {
         try {
             for (Nuvem nuvem : nuvens) {
                 // Calcula a posição ajustada para a câmera
                 int posX = nuvem.getX() - (cameraColuna * Consts.CELL_SIDE);
                 int posY = nuvem.getY() - (cameraLinha * Consts.CELL_SIDE);
-            
+
                 // Verifica se a nuvem está visível na tela
                 if (posX > -Consts.CELL_SIDE && posX < Consts.RES * Consts.CELL_SIDE &&
-                    posY > -Consts.CELL_SIDE && posY < Consts.RES * Consts.CELL_SIDE) {
-                
+                        posY > -Consts.CELL_SIDE && posY < Consts.RES * Consts.CELL_SIDE) {
+
                     Image nuvemImg = Toolkit.getDefaultToolkit().getImage(
-                        new java.io.File(".").getCanonicalPath() + Consts.PATH + nuvem.getImagePath());
-                
+                            new java.io.File(".").getCanonicalPath() + Consts.PATH + nuvem.getImagePath());
+
                     g.drawImage(nuvemImg, posX, posY, Consts.CELL_SIDE * 2, Consts.CELL_SIDE, null);
                 }
             }
@@ -317,19 +286,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if(estaNoChao())
+            if (estaNoChao())
                 faseAtual.getHeroi().moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             faseAtual.getHeroi().moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             long comparador = System.currentTimeMillis();
-            if(!(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT)) {
+            if (!(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT)) {
                 ultimoMovimentoHorizontal = comparador;
                 faseAtual.getHeroi().moveLeft();
             }
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             long comparador = System.currentTimeMillis();
-            if(!(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT)) {
+            if (!(comparador - ultimoMovimentoHorizontal < TEMPO_TIMEOUT)) {
                 ultimoMovimentoHorizontal = comparador;
                 faseAtual.getHeroi().moveRight();
             }
@@ -337,17 +306,17 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.atualizaCamera();
         this.setTitle("-> Cell: " + (faseAtual.getHeroi().getPosicao().getColuna()) + ", "
                 + (faseAtual.getHeroi().getPosicao().getLinha()));
-        repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+        repaint(); /* invoca o paint imediatamente, sem aguardar o refresh */
     }
-    
+
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_S) {
-            if(e.getID() == KeyEvent.KEY_RELEASED) {
+            if (e.getID() == KeyEvent.KEY_RELEASED) {
                 try {
                     System.out.println("Salvando...");
                     ZipStore.serializeToZip("saves/save.zip", "save.zip", this.faseAtual);
                     System.out.println("Jogo salvo como sucesso!");
-                } catch(IOException ex) {
+                } catch (IOException ex) {
                     System.out.println(ex);
                 }
             }
@@ -357,7 +326,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void mousePressed(MouseEvent e) {
-        /* Clique do mouse desligado*/
+        /* Clique do mouse desligado */
         int x = e.getX();
         int y = e.getY();
 
@@ -368,7 +337,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         repaint();
     }
-    
+
     @Override
     public void drop(DropTargetDropEvent dtde) {
         try {
@@ -410,7 +379,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -422,18 +392,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 561, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 561, Short.MAX_VALUE));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
-        );
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 500, Short.MAX_VALUE));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+     // Variables declaration - do not modify//GEN-BEGIN:variables
+     // End of variables declaration//GEN-END:variables
 
     public void mouseMoved(MouseEvent e) {
     }
@@ -455,17 +423,17 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyTyped(KeyEvent e) {
     }
- 
+
     public void dragEnter(DropTargetDragEvent dtde) {
     }
-    
+
     public void dragOver(DropTargetDragEvent dtde) {
     }
-    
+
     public void dropActionChanged(DropTargetDragEvent dtde) {
     }
-    
+
     public void dragExit(DropTargetEvent dte) {
     }
-    
+
 }
