@@ -15,9 +15,8 @@ import Auxiliar.Desenho;
 import Auxiliar.Posicao;
 import Controler.ZipStore;
 import Modelos.Cano;
+import Modelos.Entities.Villains.AuxiliarVillains.Billbala;
 import java.awt.Color;
-//import Modelos.BichinhoVaiVemVertical;
-//import Modelos.ZigueZague;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -57,7 +56,7 @@ import java.awt.Font;
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener, DropTargetListener {
     //private ArrayList<Fase> fases;
     private FasesHandler fases = new FasesHandler();
-    private Fase faseAtual;
+    private Fase faseAtual; 
     private long TEMPO_TIMEOUT = 150;
     private long ultimoMovimentoHorizontal = 0;
     private ControleDeJogo cj = new ControleDeJogo();
@@ -95,7 +94,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
     }
     else {
-        fases.inicializarFaseIndex(0, Mario);
+        fases.inicializarFaseIndex(4, Mario);
         faseAtual = fases.getFaseAtual();
     }
     this.atualizaCamera();
@@ -263,8 +262,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         
         for(Personagem p : faseAtual.getPersonagens()) {
-            if(p instanceof Bowser) continue;
+            if(p instanceof Bowser || p instanceof Billbala) 
+                continue;
             p.atualizarFisica();
+            //logica
+            //if(p instanceof Billbala && p.getPosicao() == (9, 22) && faseAtual.getNumero() == 2) {
+                //p.receberDano();
+            //}
         }
         
         faseAtual.getHeroi().atualizarFisica();
@@ -275,7 +279,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         int linha = faseAtual.getHeroi().getPosicao().getLinha();
         int coluna = faseAtual.getHeroi().getPosicao().getColuna();
 
-        cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_ALTURA - Consts.RES));
+        //cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2, Consts.MUNDO_ALTURA - Consts.RES));
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_LARGURA - Consts.RES));
     }
     
