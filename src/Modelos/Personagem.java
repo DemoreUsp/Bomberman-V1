@@ -25,7 +25,7 @@ public abstract class Personagem implements Serializable {
     protected Posicao pPosicao;
     protected boolean bTransponivel; /*Pode passar por cima?*/
     protected boolean bMortal;
-    private int gravidade = 1;/*Se encostar, morre?*/
+    private int gravidade = 1;
     protected int vidas;
 
     public boolean isbMortal() {
