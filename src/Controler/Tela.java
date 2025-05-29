@@ -68,7 +68,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private static final int NUM_NUVENS = 200; // Quantidade de nuvens
     private static final Random random = new Random();
     
-    public Tela() {
+    public Tela(boolean carregarSave) {
     Desenho.setCenario(this);
     initComponents();
     this.addMouseListener(this);
@@ -82,7 +82,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     
     // Inicializa o sistema de fases
     File arquivoZip = new File("saves/save.zip");
-    if(arquivoZip.exists()) {
+    if(carregarSave && arquivoZip.exists()) {
         try {
             Fase loadedFase = (Fase) ZipStore.deserializeFromZip("saves/save.zip", "save.zip");
             System.out.println(loadedFase.getHeroi().getVidas());
