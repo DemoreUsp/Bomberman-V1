@@ -15,6 +15,9 @@ import Modelos.Entities.Heroes.Heroi;
 import Modelos.Entities.Villains.Koopa;
 import Modelos.Entities.Villains.Goomba;
 import Modelos.Entities.Villains.Bowser;
+import java.util.HashSet;
+import Controler.Tela;
+import Controler.MenuFinal;
 /**
  *
  * @author Julean
@@ -25,6 +28,7 @@ public class FasesHandler {
     private Fase faseAtual;
     Posicao inicio = new Posicao(6, 1);
     Posicao fim = new Posicao(8, 55);
+    MenuFinal menu = new MenuFinal();
     
     public Fase getFase(int index) {
         return fases.get(index);
@@ -99,15 +103,6 @@ public class FasesHandler {
         koopa1.setPosicao(7, 18); // Acima da plataforma
         fase.adicionarPersonagem(koopa1);
         
-        
-        //gera billbalas
-        CanoBillbala inimigo1 = new CanoBillbala("");
-        inimigo1.setPosicao(9, 22);
-        fase.adicionarPersonagem(inimigo1);
-        Bloco bloco1 = new Bloco("bloco.png");
-        bloco1.setPosicao(9, 23);
-        fase.adicionarMapStuff(bloco1);
-        
         //gera plataforma3
         gerarPlataforma(fase, 35, 40, 8); //inicio, fim, altura
 
@@ -126,7 +121,7 @@ public class FasesHandler {
         
         
         //gera billbalas
-        CanoBillbala inimigo2 = new CanoBillbala("");
+        CanoBillbala inimigo2 = new CanoBillbala("Cano billBala.png");
         inimigo2.setPosicao(9, 52);
         fase.adicionarPersonagem(inimigo2);
         
@@ -155,7 +150,7 @@ public class FasesHandler {
         
         
         //gera billbalas
-        CanoBillbala inimigo1 = new CanoBillbala("");
+        CanoBillbala inimigo1 = new CanoBillbala("Cano billBala.png");
         inimigo1.setPosicao(8, 22);
         fase.adicionarPersonagem(inimigo1);
         Bloco bloco1 = new Bloco("bloco.png");
@@ -171,12 +166,9 @@ public class FasesHandler {
         koopa2.setPosicao(9, 40); 
         fase.adicionarPersonagem(koopa2);
         
-        CanoBillbala inimigo2 = new CanoBillbala("");
+        CanoBillbala inimigo2 = new CanoBillbala("Cano billBala.png");
         inimigo2.setPosicao(9, 47);
         fase.adicionarPersonagem(inimigo2);
-        Bloco bloco2 = new Bloco("bloco.png");
-        bloco2.setPosicao(9, 22);
-        fase.adicionarMapStuff(bloco2);
         
         fases.add(fase);
         faseAtual = fase;
@@ -198,10 +190,14 @@ public class FasesHandler {
         Koopa koopa1 = new Koopa("koopa.png");
         koopa1.setPosicao(9, 20); 
         fase.adicionarPersonagem(koopa1);
-        
+            
+        gerarPlataforma(fase, 28, 33, 10);
         Goomba goomba2 = new Goomba("goomba.png");
-        goomba2.setPosicao(9, 30); 
+        goomba2.setPosicao(9, 31); 
         fase.adicionarPersonagem(goomba2);
+        Bloco bloco2 = new Bloco("bloco.png");
+        bloco2.setPosicao(8, 33);
+        fase.adicionarMapStuff(bloco2);
     
         //gera plataforma
         gerarPlataforma(fase, 35, 50, 7); //inicio, fim, altura
@@ -213,13 +209,15 @@ public class FasesHandler {
         goomba3.setPosicao(6, 45); 
         fase.adicionarPersonagem(goomba3);
         
-        
         //gera billbalas
-        CanoBillbala inimigo1 = new CanoBillbala("");
-        inimigo1.setPosicao(9, 49);
+        CanoBillbala inimigo1 = new CanoBillbala("Cano billBala.png");
+        inimigo1.setPosicao(9, 27);
         fase.adicionarPersonagem(inimigo1);
         
-        CanoBillbala inimigo2 = new CanoBillbala("");
+        Bloco bloco1 = new Bloco("bloco.png");
+        bloco1.setPosicao(9, 49);
+        fase.adicionarMapStuff(bloco1);
+        CanoBillbala inimigo2 = new CanoBillbala("Cano billBala.png");
         inimigo2.setPosicao(8, 49);
         fase.adicionarPersonagem(inimigo2);
         
@@ -252,13 +250,16 @@ public class FasesHandler {
         goomba2.setPosicao(9, 28); 
         fase.adicionarPersonagem(goomba2);
         
-        CanoBillbala inimigo1 = new CanoBillbala("");
+        CanoBillbala inimigo1 = new CanoBillbala("Cano billBala.png");
         inimigo1.setPosicao(9, 34);
         fase.adicionarPersonagem(inimigo1);
         
         Bowser bowser = new Bowser("bowser.png");
-        bowser.setPosicao(9, 43);
-        fase.adicionarMapStuff(bowser);
+        bowser.setVidas(5);
+        bowser.setMortal(true);
+        bowser.setbTransponivel(true);
+        bowser.setPosicao(8, 43);
+        fase.adicionarPersonagem(bowser);
         
         fases.add(fase);
         faseAtual = fase;
@@ -273,7 +274,7 @@ public class FasesHandler {
         }
         
         if(f.getHeroi() == null) {
-            hero.setVidas(2);
+            hero.setVidas(1000);
             hero.setPosicao(
                 f.getPosicaoInicialHeroi().getLinha(),
                 f.getPosicaoInicialHeroi().getColuna()
@@ -322,7 +323,13 @@ public class FasesHandler {
             inicializarFaseIndex(faseAtualIndex, getFaseAtual().getHeroi());
             carregarFase(getFaseAtual(), temp);
         } else {
-            System.out.println("Parabens"); //adicionar tela de fim de jogo
+            menu.desenharParabens(Desenho.acessoATelaDoJogo().getGraphicsBuffer());
+            try {
+            new javax.swing.Timer(10000, e -> System.exit(0)).start();
+            } catch(Exception e) {
+                System.out.println(e);
+            } 
+            System.exit(0);
         }
     }
     

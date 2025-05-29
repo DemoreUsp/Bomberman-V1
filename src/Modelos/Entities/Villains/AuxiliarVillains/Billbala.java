@@ -2,6 +2,8 @@ package Modelos.Entities.Villains.AuxiliarVillains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Auxiliar.Posicao;
+import Controler.ControleDeJogo;
 import Modelos.Personagem;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import Auxiliar.Posicao;
 
 public class Billbala extends Personagem {
     private int vidas = 1;
@@ -33,8 +36,14 @@ public class Billbala extends Personagem {
 
     @Override
     public void autoDesenho() {
-        if(!this.moveLeft())
+        ControleDeJogo cj = Desenho.acessoATelaDoJogo().getCj();
+        if(!cj.ehPosicaoValida(Desenho.acessoATelaDoJogo().getFaseAtual(), this.getPosicao())) {
             Desenho.acessoATelaDoJogo().removePersonagem(this);
+            return;
+        }
+        if(!this.moveLeft()){
+            Desenho.acessoATelaDoJogo().removePersonagem(this);
+        }
         super.autoDesenho();
     }
     

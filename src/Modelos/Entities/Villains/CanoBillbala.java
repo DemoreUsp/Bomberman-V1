@@ -2,6 +2,7 @@ package Modelos.Entities.Villains;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Auxiliar.Posicao;
 import Controler.Tela;
 import Modelos.Entities.Villains.AuxiliarVillains.Billbala;
 import Modelos.Personagem;

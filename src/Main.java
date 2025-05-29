@@ -3,6 +3,7 @@ import Controler.MenuInicial;
 
 public class Main {
     public static void main(String[] args) {
+        
         // Mostra o menu inicial
         MenuInicial menu = new MenuInicial();
         
