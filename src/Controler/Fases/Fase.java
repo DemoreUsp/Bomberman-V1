@@ -7,6 +7,7 @@ import Modelos.Personagem;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// Classe mãe que define comportamento e métodos das fases
 public class Fase implements Serializable{
     private int numero;
     private ArrayList<Personagem> mapStuff;

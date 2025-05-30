@@ -3,8 +3,9 @@ package Controler;
 import Auxiliar.Desenho;
 import java.awt.*;
 
+// Classe que printa a mensagem final do jogo, 
+// uma vez que todas as fases são completadas
 public class MenuFinal {
-
     public void desenharParabens(Graphics gOld) {
         Tela t = Desenho.acessoATelaDoJogo();
         Graphics g = t.getBufferStrategy().getDrawGraphics();
@@ -13,12 +14,10 @@ public class MenuFinal {
                 t.getWidth() - t.getInsets().right,
                 t.getHeight() - t.getInsets().top);
 
-        // Cor de fundo da imagem enviada: azul claro
-        Color fundoAzulClaro = new Color(102, 204, 255); // equivalente ao da imagem
+        Color fundoAzulClaro = new Color(102, 204, 255); 
         g2.setColor(fundoAzulClaro);
         g2.fillRect(0, 0, t.getWidth(), t.getHeight());
 
-        // Texto com quebra de linha
         String[] linhas = {
                 "Parabéns!",
                 "Criadores:",
@@ -29,7 +28,7 @@ public class MenuFinal {
         g2.setFont(new Font("SansSerif", Font.BOLD, 40));
         FontMetrics fm = g2.getFontMetrics();
 
-        int totalAltura = linhas.length * (fm.getHeight() + 10); // espaçamento
+        int totalAltura = linhas.length * (fm.getHeight() + 10); 
         int startY = (t.getHeight() - totalAltura) / 2;
 
         g2.setColor(Color.WHITE);
@@ -42,7 +41,6 @@ public class MenuFinal {
             g2.drawString(linha, x, y);
         }
 
-        // Finaliza
         g.dispose();
         g2.dispose();
 

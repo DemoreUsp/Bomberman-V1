@@ -9,8 +9,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.ImageIcon;
-import java.lang.Math;
 
+// Classe que define o comportamento específico do Bowser
 public class Bowser extends Personagem {
     private int moveCounter;
     private int desloc = 0;

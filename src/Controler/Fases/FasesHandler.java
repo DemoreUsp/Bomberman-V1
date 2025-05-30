@@ -5,7 +5,6 @@ import Modelos.Entities.Heroes.Heroi;
 import Auxiliar.Posicao;
 import Auxiliar.Desenho;
 import Modelos.Personagem;
-import Controler.Fases.FasesHandler;
 import Modelos.MapStuff.Bloco;
 import Modelos.Entities.Villains.CanoBillbala;
 import Modelos.Entities.Villains.Koopa;
@@ -13,12 +12,9 @@ import Modelos.Entities.Villains.Goomba;
 import Modelos.Entities.Villains.Bowser;
 import Controler.MenuFinal;
 
-/**
- *
- * @author Julean
- */
+// Classe responsável por modelar cada fase
 public class FasesHandler {
-    private ArrayList<Fase> fases = new ArrayList<>();
+    private final ArrayList<Fase> fases = new ArrayList<>();
     private int faseAtualIndex = 0;
     private Fase faseAtual;
     Posicao inicio = new Posicao(6, 1);
@@ -40,35 +36,30 @@ public class FasesHandler {
     private void inicializarFase1(Heroi hero) {
         Fase fase = new Fase(0, inicio, fim);
 
-        // gera o terreno da fase
         gerarTerreno(fase);
 
-        // gera plataforma1 da posição 5 à 10; altura fixa
-        gerarPlataforma(fase, 5, 10, 10); // inicio, fim, altura
-        // Goomba na plataforma1
+        gerarPlataforma(fase, 5, 10, 10); 
+        
         Goomba goomba1 = new Goomba("goomba.png");
-        goomba1.setPosicao(9, 8); // altura, distancia
+        goomba1.setPosicao(9, 8); 
         fase.adicionarPersonagem(goomba1);
 
-        // gera plataforma2
-        gerarPlataforma(fase, 15, 20, 10);// inicio, fim, altura
-        // Koopa na plataforma2
+        gerarPlataforma(fase, 15, 20, 10);
+        
         Koopa koopa1 = new Koopa("koopa.png");
-        koopa1.setPosicao(9, 18); // altura, distancia
+        koopa1.setPosicao(9, 18); 
         fase.adicionarPersonagem(koopa1);
 
-        // gera plataforma3
-        gerarPlataforma(fase, 25, 30, 10); // inicio, fim, altura
-        // Goomba na plataforma3
+        gerarPlataforma(fase, 25, 30, 10);
+        
         Goomba goomba2 = new Goomba("goomba.png");
-        goomba2.setPosicao(9, 28); // altura, distancia
+        goomba2.setPosicao(9, 28); 
         fase.adicionarPersonagem(goomba2);
 
-        // gera plataforma4
-        gerarPlataforma(fase, 35, 40, 10);// inicio, fim, altura
-        // Koopa na plataforma2
+        gerarPlataforma(fase, 35, 40, 10);
+
         Koopa koopa2 = new Koopa("koopa.png");
-        koopa2.setPosicao(9, 38); // altura, distancia
+        koopa2.setPosicao(9, 38); 
         fase.adicionarPersonagem(koopa2);
 
         fases.add(fase);
@@ -80,42 +71,32 @@ public class FasesHandler {
     private void inicializarFase2(Heroi hero) {
         Fase fase = new Fase(1, inicio, fim);
 
-        // gera o terreno da fase
         gerarTerreno(fase);
 
-        // gera plataforma1 da posição 5 à 10
-        gerarPlataforma(fase, 5, 10, 8); // inicio, fim, altura
+        gerarPlataforma(fase, 5, 10, 8); 
 
-        // Goomba na plataforma1
         Goomba goomba1 = new Goomba("goomba.png");
-        goomba1.setPosicao(7, 7); // Acima da plataforma
+        goomba1.setPosicao(7, 7); 
         fase.adicionarPersonagem(goomba1);
 
-        // gera plataforma2
-        gerarPlataforma(fase, 15, 20, 8); // inicio, fim, altura
+        gerarPlataforma(fase, 15, 20, 8); 
 
-        // Koopa na plataforma2
         Koopa koopa1 = new Koopa("koopa.png");
-        koopa1.setPosicao(7, 18); // Acima da plataforma
+        koopa1.setPosicao(7, 18); 
         fase.adicionarPersonagem(koopa1);
 
-        // gera plataforma3
-        gerarPlataforma(fase, 35, 40, 8); // inicio, fim, altura
+        gerarPlataforma(fase, 35, 40, 8); 
 
-        // Goomba na plataforma3
         Goomba goomba2 = new Goomba("goomba.png");
-        goomba2.setPosicao(7, 38); // Acima da plataforma
+        goomba2.setPosicao(7, 38); 
         fase.adicionarPersonagem(goomba2);
 
-        // gera plataforma4
-        gerarPlataforma(fase, 45, 50, 8); // inicio, fim, altura
+        gerarPlataforma(fase, 45, 50, 8); 
 
-        // Koopa na plataforma2
         Koopa koopa2 = new Koopa("koopa.png");
-        koopa2.setPosicao(7, 48); // Acima da plataforma
+        koopa2.setPosicao(7, 48); 
         fase.adicionarPersonagem(koopa2);
 
-        // gera billbalas
         CanoBillbala inimigo2 = new CanoBillbala("Cano billBala.png");
         inimigo2.setPosicao(9, 52);
         fase.adicionarPersonagem(inimigo2);
@@ -129,7 +110,6 @@ public class FasesHandler {
     private void inicializarFase3(Heroi hero) {
         Fase fase = new Fase(2, inicio, fim);
 
-        // gera o terreno da fase
         gerarTerreno(fase);
 
         Goomba goomba1 = new Goomba("goomba.png");
@@ -140,7 +120,6 @@ public class FasesHandler {
         koopa1.setPosicao(9, 18);
         fase.adicionarPersonagem(koopa1);
 
-        // gera billbalas
         CanoBillbala inimigo1 = new CanoBillbala("Cano billBala.png");
         inimigo1.setPosicao(8, 22);
         fase.adicionarPersonagem(inimigo1);
@@ -169,7 +148,6 @@ public class FasesHandler {
     private void inicializarFase4(Heroi hero) {
         Fase fase = new Fase(3, inicio, fim);
 
-        // gera o terreno da fase
         gerarTerreno(fase);
 
         Goomba goomba1 = new Goomba("goomba.png");
@@ -181,24 +159,24 @@ public class FasesHandler {
         fase.adicionarPersonagem(koopa1);
 
         gerarPlataforma(fase, 28, 33, 10);
-        Goomba goomba2 = new Goomba("goomba.png");
-        goomba2.setPosicao(9, 31);
-        fase.adicionarPersonagem(goomba2);
         Bloco bloco2 = new Bloco("bloco.png");
         bloco2.setPosicao(8, 33);
         fase.adicionarMapStuff(bloco2);
-
-        // gera plataforma
-        gerarPlataforma(fase, 35, 50, 7); // inicio, fim, altura
+        
+        Goomba goomba2 = new Goomba("goomba.png");
+        goomba2.setPosicao(9, 31);
+        fase.adicionarPersonagem(goomba2);
+        
+        gerarPlataforma(fase, 35, 50, 7); 
 
         Koopa koopa2 = new Koopa("koopa.png");
-        koopa2.setPosicao(6, 40); // Acima da plataforma
+        koopa2.setPosicao(6, 40); 
         fase.adicionarPersonagem(koopa2);
+        
         Goomba goomba3 = new Goomba("goomba.png");
         goomba3.setPosicao(6, 45);
         fase.adicionarPersonagem(goomba3);
 
-        // gera billbalas
         CanoBillbala inimigo1 = new CanoBillbala("Cano billBala.png");
         inimigo1.setPosicao(9, 27);
         fase.adicionarPersonagem(inimigo1);
@@ -206,6 +184,7 @@ public class FasesHandler {
         Bloco bloco1 = new Bloco("bloco.png");
         bloco1.setPosicao(9, 49);
         fase.adicionarMapStuff(bloco1);
+        
         CanoBillbala inimigo2 = new CanoBillbala("Cano billBala.png");
         inimigo2.setPosicao(8, 49);
         fase.adicionarPersonagem(inimigo2);
@@ -219,7 +198,6 @@ public class FasesHandler {
     private void inicializarFase5(Heroi hero) {
         Fase fase = new Fase(4, inicio, fim);
 
-        // gera o terreno da fase
         gerarTerreno(fase);
 
         gerarPlataforma(fase, 7, 35, 10);
@@ -254,7 +232,6 @@ public class FasesHandler {
     }
 
     private void carregarFase(Fase f, Heroi hero) {
-        // Posiciona os Personagens onde estavam
         for (Personagem p : f.getPersonagens()) {
             p.setPosicao(p.getPosicao().getLinha(), p.getPosicao().getColuna());
         }
@@ -318,7 +295,6 @@ public class FasesHandler {
     }
 
     public void gerarTerreno(Fase essaFase) {
-        // gerar terreno
         for (int col = 0; col < 63; col++) {
             Bloco bloco = new Bloco("bloco.png");
             bloco.setPosicao(10, col);
@@ -354,7 +330,6 @@ public class FasesHandler {
     }
 
     public void gerarPlataforma(Fase essaFase, int ini, int fim, int altura) {
-        // gerar plataforma
         for (int col = ini; col <= fim; col++) {
             Bloco plataforma = new Bloco("bloco.png");
             plataforma.setPosicao(altura, col);

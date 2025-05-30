@@ -2,6 +2,7 @@ package Auxiliar;
 
 import java.io.Serializable;
 
+// Classe mantida bem próxima ao protótipo
 public class Posicao implements Serializable {
     private int linha;
     private int coluna;

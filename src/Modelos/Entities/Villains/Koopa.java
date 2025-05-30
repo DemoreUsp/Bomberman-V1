@@ -9,6 +9,7 @@ import Modelos.Personagem;
 import java.awt.Rectangle;
 import java.util.Iterator;
 
+// Classe que define comportamento/movimentação do koopa
 public class Koopa extends Personagem {
     private boolean movingRight;
     private int moveCounter;
@@ -67,23 +68,21 @@ public class Koopa extends Personagem {
         int cellSize = Consts.CELL_SIDE;
         return new Rectangle(
                 pPosicao.getColuna() * cellSize,
-                (pPosicao.getLinha() - 1) * cellSize, // Área acima do Koopa
+                (pPosicao.getLinha() - 1) * cellSize, 
                 cellSize,
                 cellSize);
     }
 
+    // Método que, quando o koopa morre, vira um casco
     public void transformarEmCasco(Iterator<Personagem> iterator) {
 
-        // Cria novo Casco
         Casco casco = new Casco("casco.png");
         casco.setPosicao(this.getPosicao().getLinha(), this.getPosicao().getColuna());
         casco.setbTransponivel(false);
         casco.setMortal(true);
 
-        // Adiciona à lista de personagens
         Desenho.acessoATelaDoJogo().getFaseAtual().getPersonagens().add(casco);
 
-        // Remove o Koopa usando o iterator
         iterator.remove();
     }
 }

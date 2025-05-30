@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.io.Serializable;
 
+// Classe mantida bem próxima ao protótipo
 public class ControleDeJogo implements Serializable {
 
     public void desenhaTudo(Fase umaFase, Heroi hero, int cameraX, int cameraY, Graphics g) {
@@ -32,23 +33,23 @@ public class ControleDeJogo implements Serializable {
     public void processaTudo(Fase umaFase, Heroi hero) {
         List<Personagem> paraAdicionar = new ArrayList<>();
 
-        // Usar Iterator para remoção segura
+        // Usa Iterator para remoção segura
         Iterator<Personagem> iterator = umaFase.getPersonagens().iterator();
         while (iterator.hasNext()) {
             Personagem p = iterator.next();
 
-            // 1. Primeiro verifica colisão por CIMA
+            // Verifica colisão por cima
             if (p.getUpHitbox() != null && hero.getHitbox() != null &&
                     p.getUpHitbox().intersects(hero.getHitbox())) {
 
-                // Koopa -> Transformar em Casco
+                // Transforma koopa em casco
                 if (p instanceof Koopa) {
                     Casco casco = new Casco("casco.png");
                     casco.setPosicao(p.getPosicao().getLinha(), p.getPosicao().getColuna());
                     paraAdicionar.add(casco);
-                    iterator.remove(); // Remove Koopa com segurança
+                    iterator.remove(); 
                     hero.moveUp();
-                    continue; // Pula para próxima iteração
+                    continue; 
                 }
                 if (p instanceof Bowser) {
                     if (p.getVidas() > 1) {
@@ -63,7 +64,7 @@ public class ControleDeJogo implements Serializable {
                 hero.moveUp();
             }
 
-            // 2. Depois verifica colisão FRONTAL
+            // Verifica colisão frontal
             if (p.getHitbox() != null && hero.getHitbox() != null &&
                     p.getHitbox().intersects(hero.getHitbox())) {
 
@@ -82,7 +83,6 @@ public class ControleDeJogo implements Serializable {
      * Retorna true se a posicao p é válida para Hero com relacao a todos os
      * personagens no array
      */
-    // Em ControleDeJogo.java
     public boolean ehPosicaoValida(Fase umaFase, Posicao p) {
         for (Personagem bloco : umaFase.getMapStuff()) {
             if (bloco.getPosicao().igual(p) && !bloco.isbTransponivel()) {
@@ -90,7 +90,7 @@ public class ControleDeJogo implements Serializable {
             }
         }
 
-        // Verificar colisão com outros personagens
+        // Verifica colisão com outros personagens
         for (Personagem personagem : umaFase.getPersonagens()) {
             if (personagem.getPosicao().igual(p) && !personagem.isbTransponivel()) {
                 return false;

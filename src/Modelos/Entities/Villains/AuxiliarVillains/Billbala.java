@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 
+// Classe que define o comportamento dos tiros do canhão (BillBallas)
 public class Billbala extends Personagem {
     private int vidas = 1;
             
@@ -69,7 +70,7 @@ public class Billbala extends Personagem {
         int cellSize = Consts.CELL_SIDE;
         return new Rectangle(
             pPosicao.getColuna() * cellSize,
-            (pPosicao.getLinha() - 1) * cellSize, // Hitbox acima do Billbala
+            (pPosicao.getLinha() - 1) * cellSize, 
             cellSize,
             cellSize
         );

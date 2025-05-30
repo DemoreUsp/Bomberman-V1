@@ -6,11 +6,13 @@ import Auxiliar.Posicao;
 import Modelos.Personagem;
 import java.awt.Rectangle;
 
+// Classe que transforma o koopa em casco ao morrer;
+// Define o comportamento do casco
 public class Casco extends Personagem {
     private boolean movingRight = true;
     private int moveCounter = 0;
-    private int moveDelay = 0; // Contador de delay
-    private static final int MOVE_DELAY_MAX = 10; // Ajuste este valor para controlar a velocidade
+    private int moveDelay = 0; 
+    private static final int MOVE_DELAY_MAX = 10;
 
     public Casco(String sNomeImagePNG) {
         super(sNomeImagePNG);
@@ -61,7 +63,6 @@ public class Casco extends Personagem {
     
     @Override
     public Rectangle getUpHitbox() {
-        // Mesma área que Goomba
         int cellSize = Consts.CELL_SIDE;
         return new Rectangle(
             pPosicao.getColuna() * cellSize,

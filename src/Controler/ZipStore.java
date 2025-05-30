@@ -4,8 +4,8 @@ import Modelos.Entities.Villains.Goomba;
 import java.io.*;
 import java.util.zip.*;
 
+// Classe responsável por cuidar da serialização/desserialização
 public class ZipStore {
-
     public static void serializeToZip(String zipFilePath, String entryName, Serializable object) throws IOException {
         byte[] data = serialize(object);
         storeInZip(zipFilePath, entryName, data);

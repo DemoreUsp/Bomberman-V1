@@ -3,11 +3,12 @@ package Controler;
 import java.awt.*;
 import javax.swing.*;
 
+// Classe que printa o menu inicial, antes do loop do jogo
 public class MenuInicial {
     private JFrame frame;
-    private JButton btnNewGame;
-    private JButton btnContinue;
-    private JButton btnSobre;
+    private final JButton btnNewGame;
+    private final JButton btnContinue;
+    private final JButton btnSobre;
     private boolean iniciarJogo = false;
     private boolean carregarJogo = false;
 

@@ -6,6 +6,7 @@ import Auxiliar.Posicao;
 import Modelos.Personagem;
 import java.awt.Rectangle;
 
+// Classe que define o comportamento específico do Mario
 public class Heroi extends Personagem {
     public Heroi(String sNomeImagePNG) {
         super(sNomeImagePNG);
@@ -53,10 +54,10 @@ public class Heroi extends Personagem {
     }
 
     public boolean moveUp() {
-        for (int i = 0; i < 4; i++) { // Força do pulo = 4 células
+        for (int i = 0; i < 4; i++) { 
             Posicao nextPos = new Posicao(this.pPosicao.getLinha() - 1, this.pPosicao.getColuna());
             if (!Desenho.acessoATelaDoJogo().ehPosicaoValida(nextPos)) {
-                return false; // Bloqueia o pulo se houver colisão
+                return false; 
             }
             this.pPosicao.setPosicao(nextPos.getLinha(), nextPos.getColuna());
         }

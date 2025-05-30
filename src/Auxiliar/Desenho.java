@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import Controler.Tela;
 
+// Classe mantida igual ao protótipo
 public class Desenho implements Serializable {
 
     static Tela jCenario;

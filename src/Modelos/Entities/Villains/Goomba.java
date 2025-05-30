@@ -6,16 +6,16 @@ import Auxiliar.Posicao;
 import Modelos.Personagem;
 import java.awt.Rectangle;
 
+// Classe que define o comportamento/movimentação do goomba
 public class Goomba extends Personagem {
-
     private boolean movingRight;
     private int moveCounter;
 
     public Goomba(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        movingRight = false; // Começa movendo para a esquerda
+        movingRight = false; 
         moveCounter = 0;
-        this.setMortal(true); // Correção aqui
+        this.setMortal(true); 
     }
 
     @Override
@@ -36,14 +36,14 @@ public class Goomba extends Personagem {
         int cellSize = Consts.CELL_SIDE;
         return new Rectangle(
                 pPosicao.getColuna() * cellSize,
-                (pPosicao.getLinha() - 1) * cellSize, // Área acima do Goomba
+                (pPosicao.getLinha() - 1) * cellSize, 
                 cellSize,
                 cellSize);
     }
 
     @Override
     public boolean isbMortal() {
-        return true; // Mata o Mario ao toque frontal
+        return true; 
     }
 
     public void autoDesenho() {
@@ -51,18 +51,16 @@ public class Goomba extends Personagem {
         if (moveCounter >= 15) {
             moveCounter = 0;
 
-            // Verifica próxima posição
             Posicao nextPos = new Posicao(this.getPosicao().getLinha(),
                     this.getPosicao().getColuna() + (movingRight ? 1 : -1));
 
-            // Verifica colisão com o mapa
             boolean canMove = Desenho.acessoATelaDoJogo().getCj()
                     .ehPosicaoValida(Desenho.acessoATelaDoJogo().getFaseAtual(), nextPos);
 
             if (canMove) {
                 this.setPosicao(nextPos.getLinha(), nextPos.getColuna());
             } else {
-                movingRight = !movingRight; // Inverte direção
+                movingRight = !movingRight; 
             }
         }
         super.autoDesenho();
