@@ -32,6 +32,7 @@ import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.awt.Font;
 
+// Classe que de fato roda o jogo
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener, DropTargetListener {
     private FasesHandler fases = new FasesHandler();
     private Fase faseAtual;
@@ -42,7 +43,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private int cameraLinha = 0;
     private int cameraColuna = 0;
     private List<Nuvem> nuvens;
-    private static final int NUM_NUVENS = 200; // Quantidade de nuvens
+    private static final int NUM_NUVENS = 200; 
     private static final Random random = new Random();
 
     public Tela(boolean carregarSave) {
@@ -78,7 +79,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         inicializarNuvens();
         Desenho.setCenario(this);
         initComponents();
-        /* Cria a janela do tamanho do tabuleiro + insets (bordas) da janela */
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
     }
@@ -129,20 +129,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         return g2;
     }
 
+    // Função que gera aleatóriamente nuvens a cada run
     public void inicializarNuvens() {
         nuvens = new ArrayList<>();
         int tentativas = 0;
-        int maxTentativas = 200; // Limite de tentativas para evitar loop infinito
-        int distanciaMinima = Consts.CELL_SIDE * 2; // Distância mínima entre nuvens
+        int maxTentativas = 200; 
+        int distanciaMinima = Consts.CELL_SIDE * 2; 
 
         while (nuvens.size() < NUM_NUVENS && tentativas < maxTentativas) {
-            // Gera posições aleatórias dentro dos limites do mundo
             int x = random.nextInt(Consts.MUNDO_LARGURA * Consts.CELL_SIDE);
-            int y = random.nextInt(Consts.MUNDO_ALTURA * Consts.CELL_SIDE / 3); // Mantém nuvens no terço superior
+            int y = random.nextInt(Consts.MUNDO_ALTURA * Consts.CELL_SIDE / 3); 
 
             boolean posicaoValida = true;
 
-            // Verifica se a nova posição está longe o suficiente das nuvens existentes
             for (Nuvem nuvemExistente : nuvens) {
                 double distancia = calcularDistancia(x, y, nuvemExistente.getX(), nuvemExistente.getY());
 
@@ -160,18 +159,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
     }
 
-    // Método auxiliar para calcular a distância entre dois pontos
+    // Método para calcular a distância entre dois pontos
     private double calcularDistancia(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
-        /* Criamos um contexto gráfico */
+        
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
-        /**
-         * ***********Desenha cenário de fundo*************
-         */
+        
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j < Consts.RES; j++) {
                 int mapaLinha = cameraLinha + i;
@@ -196,10 +193,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         int xi = 270;
         int yi = 50;
 
-        // Fonte
         g2.setFont(new Font("SansSerif", Font.BOLD, 50));
 
-        // Desenha contorno preto
         g2.setColor(Color.BLACK);
         g2.drawString(textoCeu, xi - 2, yi - 2);
         g2.drawString(textoCeu, xi - 2, yi + 2);
@@ -247,19 +242,15 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         int linha = faseAtual.getHeroi().getPosicao().getLinha();
         int coluna = faseAtual.getHeroi().getPosicao().getColuna();
 
-        // cameraLinha = Math.max(0, Math.min(linha - Consts.RES / 2,
-        // Consts.MUNDO_ALTURA - Consts.RES));
         cameraColuna = Math.max(0, Math.min(coluna - Consts.RES / 2, Consts.MUNDO_LARGURA - Consts.RES));
     }
 
     private void desenharNuvens(Graphics g) {
         try {
             for (Nuvem nuvem : nuvens) {
-                // Calcula a posição ajustada para a câmera
                 int posX = nuvem.getX() - (cameraColuna * Consts.CELL_SIDE);
                 int posY = nuvem.getY() - (cameraLinha * Consts.CELL_SIDE);
 
-                // Verifica se a nuvem está visível na tela
                 if (posX > -Consts.CELL_SIDE && posX < Consts.RES * Consts.CELL_SIDE &&
                         posY > -Consts.CELL_SIDE && posY < Consts.RES * Consts.CELL_SIDE) {
 
@@ -306,7 +297,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.atualizaCamera();
         this.setTitle("-> Cell: " + (faseAtual.getHeroi().getPosicao().getColuna()) + ", "
                 + (faseAtual.getHeroi().getPosicao().getLinha()));
-        repaint(); /* invoca o paint imediatamente, sem aguardar o refresh */
+        repaint(); 
     }
 
     public void keyReleased(KeyEvent e) {
@@ -326,7 +317,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void mousePressed(MouseEvent e) {
-        /* Clique do mouse desligado */
         int x = e.getX();
         int y = e.getY();
 
@@ -349,23 +339,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
                 for (File arquivo : arquivos) {
                     if (arquivo.getName().endsWith(".zip")) {
-                        // Supondo que o zip tenha apenas 1 entry: "inimigo.zip"
                         Object obj = ZipStore.deserializeFromZip(arquivo.getAbsolutePath(), "GoombaDrop.zip");
 
                         if (obj instanceof Goomba) {
                             Goomba inimigo = (Goomba) obj;
 
-                            // Pega a posição do mouse no drop
                             int x = dtde.getLocation().x;
                             int y = dtde.getLocation().y;
 
-                            // Converte para coordenadas de grade (ex: 32px por tile)
                             int linha = y / 32;
                             int coluna = x / 32;
 
                             inimigo.setPosicao(linha, coluna);
 
-                            // Adiciona à fase atual
                             faseAtual.adicionarPersonagem(inimigo);
 
                             System.out.println("Inimigo inserido em: " + linha + ", " + coluna);
@@ -379,8 +365,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -399,9 +383,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                         .addGap(0, 500, Short.MAX_VALUE));
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-     // Variables declaration - do not modify//GEN-BEGIN:variables
-     // End of variables declaration//GEN-END:variables
+    }
 
     public void mouseMoved(MouseEvent e) {
     }

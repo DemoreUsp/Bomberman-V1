@@ -1,13 +1,15 @@
 import Controler.Tela;
 import Controler.MenuInicial;
 
+// Main próxima ao protótipo; menu inicial inserido
+
 public class Main {
     public static void main(String[] args) {
         
         // Mostra o menu inicial
         MenuInicial menu = new MenuInicial();
         
-        // Aguarda até que o menu seja fechado
+        // Aguarda até que o usuário escolha uma opção
         while(!menu.deveIniciarJogo()) {
             try {
                 Thread.sleep(100);

@@ -1,6 +1,7 @@
 
 package Modelos.MapStuff;
 
+// Classe que auxilia na criação das nuvens
 public class Nuvem {
     private int x;
     private int y;

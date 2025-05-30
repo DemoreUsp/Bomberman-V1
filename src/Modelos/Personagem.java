@@ -12,13 +12,13 @@ import javax.swing.ImageIcon;
 import java.awt.Rectangle;
 import java.awt.Color;
 
+// Classe que define o comportamento geral dos personagens
 public abstract class Personagem implements Serializable {
-
     protected ImageIcon iImage;
     protected Posicao pPosicao;
-    protected boolean bTransponivel; /* Pode passar por cima? */
+    protected boolean bTransponivel; 
     protected boolean bMortal;
-    private int gravidade = 1;
+    private final int gravidade = 1;
     protected int vidas;
 
     public boolean isbMortal() {
@@ -51,10 +51,6 @@ public abstract class Personagem implements Serializable {
     }
 
     public Posicao getPosicao() {
-        /*
-         * TODO: Retirar este método para que objetos externos nao possam operar
-         * diretamente sobre a posição do Personagem
-         */
         return pPosicao;
     }
 
@@ -87,7 +83,6 @@ public abstract class Personagem implements Serializable {
     }
 
     public Rectangle getUpHitbox() {
-        // Adicione logs para verificar as coordenadas
         Rectangle hitbox = new Rectangle(
                 pPosicao.getColuna() * Consts.CELL_SIDE + 4,
                 (pPosicao.getLinha() - 1) * Consts.CELL_SIDE + 4,
@@ -100,7 +95,7 @@ public abstract class Personagem implements Serializable {
         Rectangle hitbox = getHitbox();
 
         if (hitbox != null) {
-            g2.setColor(new Color(255, 0, 0, 70)); // Vermelho com 70% de opacidade
+            g2.setColor(new Color(255, 0, 0, 70)); 
             g2.fillRect(hitbox.x - cameraOffsetX, hitbox.y - cameraOffsetY, hitbox.width, hitbox.height);
             g2.setColor(Color.RED);
             g2.drawRect(hitbox.x - cameraOffsetX, hitbox.y - cameraOffsetY, hitbox.width, hitbox.height);

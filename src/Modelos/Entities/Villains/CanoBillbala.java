@@ -6,6 +6,7 @@ import Modelos.Entities.Villains.AuxiliarVillains.Billbala;
 import Modelos.Personagem;
 import java.awt.Rectangle;
 
+// Classe que define o comportamento do cano que "gera BillBalas" 
 public class CanoBillbala extends Personagem {
     private int iContaIntervalos;
     private Personagem f;
